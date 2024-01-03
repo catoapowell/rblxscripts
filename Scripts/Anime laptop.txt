@@ -1,0 +1,153 @@
+--how tf did u find dis aaaaa
+--Anyways, enjoy this laptop I made.
+--But also prepare for alot of anime hell kthx.
+
+function sandbox(var,func)
+    local env = getfenv(func)
+    local newenv = setmetatable({},{
+        __index = function(self,k)
+            if k=="script" then
+                return var
+            else
+                return env[k]
+            end
+        end,
+    })
+    setfenv(func,newenv)
+    return func
+end
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting"))
+Model0 = Instance.new("Model")
+Part1 = Instance.new("Part")
+SurfaceGui2 = Instance.new("SurfaceGui")
+TextLabel3 = Instance.new("TextLabel")
+Decal4 = Instance.new("Decal")
+Script5 = Instance.new("Script")
+Sound6 = Instance.new("Sound")
+Part7 = Instance.new("Part")
+Decal8 = Instance.new("Decal")
+Model0.Name = "Anime"
+Model0.Parent = mas
+Part1.Name = "bosh"
+Part1.Parent = Model0
+Part1.BrickColor = BrickColor.new("Black")
+Part1.Rotation = Vector3.new(-180, 0, -180)
+Part1.Anchored = true
+Part1.Size = Vector3.new(125.81002, 85.8600006, 2)
+Part1.CFrame = CFrame.new(-8.22500515, 42.9300766, -33.4600029, -1.00000441, 0, -7.83801079e-06, 0, 1, 0, 7.83801079e-06, 0, -1.00000441)
+Part1.Color = Color3.new(0.105882, 0.164706, 0.207843)
+Part1.Position = Vector3.new(-8.22500515, 42.9300766, -33.4600029)
+Part1.Orientation = Vector3.new(0, -180, 0)
+Part1.Color = Color3.new(0.105882, 0.164706, 0.207843)
+SurfaceGui2.Parent = Part1
+TextLabel3.Parent = SurfaceGui2
+TextLabel3.Transparency = 0
+TextLabel3.Size = UDim2.new(0, 800, 0, 600)
+TextLabel3.Text = "..."
+TextLabel3.Active = true
+TextLabel3.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel3.BackgroundTransparency = 0
+TextLabel3.BorderColor3 = Color3.new(1, 1, 1)
+TextLabel3.BorderSizePixel = 2
+TextLabel3.Font = Enum.Font.SourceSans
+TextLabel3.FontSize = Enum.FontSize.Size96
+TextLabel3.TextColor3 = Color3.new(0, 0, 0)
+TextLabel3.TextScaled = true
+TextLabel3.TextStrokeColor3 = Color3.new(1, 1, 1)
+TextLabel3.TextWrapped = true
+Decal4.Parent = Part1
+Script5.Parent = Part1
+table.insert(cors,sandbox(Script5,function()
+game.Workspace.Anime.Sound:Play()
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "song name = rick astley hentai or something"
+wait(5)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "Oh oh oh"
+wait(2)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "I want a hentai girl for me to make me happy"
+wait(4)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "I want her so I can stop using my hand"
+wait(4)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "Every single day, while watching anime"
+wait(2.5)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "I'd pull her from my screen, just like in my dreams"
+wait(3)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "I want to feel her touch OH mainly on my crotch AH AH"
+wait(3.5)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "I want my own hentai girl"
+wait(4)
+game.Workspace.Anime.bosh.SurfaceGui.TextLabel.Text = "And she would sing:"
+wait(2.7)
+game.Workspace.Anime.bosh.SurfaceGui:Destroy()
+
+
+while true do
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=31844995"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=69154140"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=165913938"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=286214428"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=325816951"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=213148631"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=170179353"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=170025784"
+    wait(0.37)
+    game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=317081883"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=557406454"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=45535348"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=143569264"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=468837051"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=468839008"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=157918222"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=511426505"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=1065873186"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=271028167"
+    wait(0.37)
+        game.Workspace.Anime.bosh.Decal.Texture = "http://www.roblox.com/asset/?id=512126210"
+    wait(0.37)
+end
+
+end))
+Sound6.Parent = Model0
+Sound6.SoundId = "rbxassetid://https://audio.jukehost.co.uk/BTN4skbeRxffA656ZoyndjjcJk8rdFzq"
+Sound6.Volume = 10
+Part7.Parent = Model0
+Part7.BrickColor = BrickColor.new("Black")
+Part7.Rotation = Vector3.new(-180, 0, 180)
+Part7.Anchored = true
+Part7.Size = Vector3.new(125.819984, 1, 95.8000031)
+Part7.CFrame = CFrame.new(-8.2001152, 0.50002408, 15.4189072, -1.00000048, -2.17944465e-11, 2.33799219e-05, 2.0634161e-11, 1, 1.80308643e-06, -2.33799219e-05, 1.8030853e-06, -1.00000048)
+Part7.BottomSurface = Enum.SurfaceType.Smooth
+Part7.TopSurface = Enum.SurfaceType.Smooth
+Part7.Color = Color3.new(0.105882, 0.164706, 0.207843)
+Part7.Position = Vector3.new(-8.2001152, 0.50002408, 15.4189072)
+Part7.Orientation = Vector3.new(0, 180, 0)
+Part7.Color = Color3.new(0.105882, 0.164706, 0.207843)
+Decal8.Parent = Part7
+Decal8.Texture = "http://www.roblox.com/asset/?id=122001527"
+Decal8.Face = Enum.NormalId.Top
+for i,v in pairs(mas:GetChildren()) do
+    v.Parent = workspace
+    pcall(function() v:MakeJoints() end)
+end
+mas:Destroy()
+for i,v in pairs(cors) do
+    spawn(function()
+        pcall(v)
+    end)
+end

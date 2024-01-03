@@ -1,0 +1,1832 @@
+
+--[[
+
+ __     __              __  __                    _____       _   ___    ___  
+ \ \   / /             |  \/  |                  / ____|     (_) |__ \  / _ \ 
+  \ \_/ /__  _   _ _ __| \  / | ___  _ __ ___   | |  __ _   _ _     ) || | | |
+   \   / _ \| | | | '__| |\/| |/ _ \| '_ ` _ \  | | |_ | | | | |   / / | | | |
+    | | (_) | |_| | |  | |  | | (_) | | | | | | | |__| | |_| | |  / /_ | |_| |
+    |_|\___/ \__,_|_|  |_|  |_|\___/|_| |_| |_|  \_____|\__,_|_| |____(_)___/ 
+
+]]
+
+--// loadstring(game:GetObjects('rbxassetid://337743103')[1].Source)()
+
+--/ | / Seth Milkman / | /--
+
+
+
+for i,v in pairs(game.CoreGui:GetChildren()) do
+	if v.Name == 'YourMom2' then
+		v:remove()
+	end
+end
+
+wait()
+
+YourMom         = game:GetObjects('rbxassetid://337131434')[1]
+YourMom.Parent  = game.CoreGui
+
+YourMom_DATA         = game:GetObjects('rbxassetid://339069994')[1]
+YourMom_DATA.Parent  = game.ContextActionService
+
+MAIN   = YourMom.MAIN
+TABS   = MAIN.TABS
+PAGES  = MAIN.PAGES
+
+OPEN  = YourMom.OPEN
+EXIT  = MAIN.EXIT
+
+
+
+--// LOCAL PLAYER
+
+PLAYER     = game.Players.LocalPlayer
+MOUSE      = PLAYER:GetMouse()
+
+--// Tabs
+
+TABS_LOCAL     = TABS.LOCAL
+TABS_SERVER    = TABS.SERVER
+TABS_TOYS      = TABS.TOYS
+TABS_PLAYERS   = TABS.PLAYERS
+TABS_EXPLORER  = TABS.EXPLORER
+TABS_SOUND     = TABS.SOUND
+TABS_SCRIPTS   = TABS.SCRIPTS
+TABS_MISC      = TABS.MISC
+TABS_BAN       = TABS.BAN
+TABS_SETTINGS  = TABS.SETTINGS
+
+
+
+--// Pages
+
+PAGES_LOCAL     = PAGES.LOCAL
+PAGES_SERVER    = PAGES.SERVER
+PAGES_TOYS      = PAGES.TOYS
+PAGES_PLAYERS   = PAGES.PLAYERS
+PAGES_EXPLORER  = PAGES.EXPLORER
+PAGES_SOUND     = PAGES.SOUND
+PAGES_SCRIPTS   = PAGES.SCRIPTS
+PAGES_MISC      = PAGES.MISC
+PAGES_BAN       = PAGES.BAN
+PAGES_SETTINGS  = PAGES.SETTINGS
+
+
+
+--// GAME INFO
+
+FILTERING_ENABLED  = game.Workspace.FilteringEnabled
+PLACE_ID           = game.PlaceId
+CREATOR_ID         = game.CreatorId
+MAX_PLAYERS        = game.Players.MaxPlayers
+CURRENT_PLAYERS    = game.Players.NumPlayers
+
+OUTLINES        = game.Lighting.Outlines
+GLOBAL_SHADOWS  = game.Lighting.GlobalShadows
+SERVER_LOCKED   = false
+_G.COMMAND_BAR  = false
+ANTI_EXPLOIT    = false
+
+
+
+--// OPEN AND CLOSE
+
+GUI_OPENED = false
+
+OPEN.MouseButton1Down:connect(function()
+	if GUI_OPENED == false then
+		OPEN.Active = true
+		OPEN:TweenPosition(UDim2.new(0, -50, 1, 0), 'Out', 'Quad', 0.5)
+		MAIN:TweenPosition(UDim2.new(0, 20, 0, 20), 'Out', 'Quad', 0.5)
+		GUI_OPENED = true
+	end
+end)
+
+EXIT.MouseButton1Down:connect(function()
+	if GUI_OPENED == true then
+		OPEN.Active = true
+		OPEN:TweenPosition(UDim2.new(0, 0, 1, -50), 'Out', 'Quad', 0.5)
+		MAIN:TweenPosition(UDim2.new(0, -400, 0, -400), 'Out', 'Quad', 0.5)
+		GUI_OPENED = false
+	end
+end)
+
+
+
+--// TABS FUNCTIONS
+
+for i,v in pairs(TABS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		for a,b in pairs(PAGES:GetChildren()) do
+			if b.Name == v.Name then
+				b.Visible = true
+			else
+				b.Visible = false
+			end
+		end
+	end)
+end
+
+
+
+--// EXTRA FUNCTIONS
+
+NOCLIP = false
+
+function SCALE(CHAR,SCAL)
+	local SIZE_HAT_DATA = Instance.new('Folder', game.Lighting)
+	SIZE_HAT_DATA.Name = 'HAT_DATA_' .. CHAR.Name
+	
+	for i,v in pairs(CHAR:GetChildren()) do
+		if v:IsA('Hat') then
+			v:Clone().Parent = SIZE_HAT_DATA
+			wait()
+			v:remove()
+		end
+	end
+	
+	local HEAD   = CHAR.Head
+	local TORSO  = CHAR.Torso
+	local LA     = CHAR['Left Arm']
+	local RA     = CHAR['Right Arm']
+	local LL     = CHAR['Left Leg']
+	local RL     = CHAR['Right Leg']
+	local HRP    = CHAR.HumanoidRootPart
+	
+	HEAD.FormFactor   = 3
+	TORSO.FormFactor  = 3
+	LA.FormFactor     = 3
+	RA.FormFactor     = 3
+	LL.FormFactor     = 3
+	RL.FormFactor     = 3
+	HRP.FormFactor    = 3
+	
+	HEAD.Size   = Vector3.new(SCAL * 2, SCAL, SCAL)
+	TORSO.Size  = Vector3.new(SCAL * 2, SCAL * 2, SCAL)
+	LA.Size     = Vector3.new(SCAL, SCAL * 2, SCAL)
+	RA.Size     = Vector3.new(SCAL, SCAL * 2, SCAL)
+	LL.Size     = Vector3.new(SCAL, SCAL * 2, SCAL)
+	RL.Size     = Vector3.new(SCAL, SCAL * 2, SCAL)
+	HRP.Size    = Vector3.new(SCAL * 2, SCAL * 2, SCAL)
+	
+	local M1 = Instance.new('Motor6D', TORSO)
+	local M2 = Instance.new('Motor6D', TORSO)
+	local M3 = Instance.new('Motor6D', TORSO)
+	local M4 = Instance.new('Motor6D', TORSO)
+	local M5 = Instance.new('Motor6D', TORSO)
+	local M6 = Instance.new('Motor6D', HRP)
+	
+	M1.Name   = 'Neck'
+	M1.Part0  = TORSO
+	M1.Part1  = HEAD
+	M1.C0     = CFrame.new(0, 1 * SCAL, 0) * CFrame.Angles(-1.6, 0, 3.1)
+	M1.C1     = CFrame.new(0, -0.5 * SCAL, 0) * CFrame.Angles(-1.6, 0, 3.1)
+	
+	M2.Name   = 'Left Shoulder'
+	M2.Part0  = TORSO
+	M2.Part1  = LA
+	M2.C0     = CFrame.new(-1 * SCAL, 0.5 * SCAL, 0) * CFrame.Angles(0, -1.6, 0)
+	M2.C1     = CFrame.new(0.5 * SCAL, 0.5 * SCAL, 0) * CFrame.Angles(0, -1.6, 0)
+	
+	M3.Name   = 'Right Shoulder'
+	M3.Part0  = TORSO
+	M3.Part1  = RA
+	M3.C0     = CFrame.new(1 * SCAL, 0.5 * SCAL, 0) * CFrame.Angles(0, 1.6, 0)
+	M3.C1     = CFrame.new(-0.5 * SCAL, 0.5 * SCAL, 0) * CFrame.Angles(0, 1.6, 0)
+	
+	M4.Name   = 'Left Hip'
+	M4.Part0  = TORSO
+	M4.Part1  = LL
+	M4.C0     = CFrame.new(-1 * SCAL, -1 * SCAL, 0) * CFrame.Angles(0, -1.6, 0)
+	M4.C1     = CFrame.new(-0.5 * SCAL, 1 * SCAL, 0) * CFrame.Angles(0, -1.6, 0)
+	
+	M5.Name   = 'Right Hip'
+	M5.Part0  = TORSO
+	M5.Part1  = RL
+	M5.C0     = CFrame.new(1 * SCAL, -1 * SCAL, 0) * CFrame.Angles(0, 1.6, 0)
+	M5.C1     = CFrame.new(0.5 * SCAL, 1 * SCAL, 0) * CFrame.Angles(0, 1.6, 0)
+	
+	M6.Name   = 'RootJoint'
+	M6.Part0  = HRP
+	M6.Part1  = TORSO
+	M6.C0     = CFrame.new(0, 0, 0) * CFrame.Angles(-1.6, 0, -3.1)
+	M6.C1     = CFrame.new(0, 0, 0) * CFrame.Angles(-1.6, 0, -3.1)
+	
+	wait()
+	
+	for i,v in pairs(SIZE_HAT_DATA:GetChildren()) do
+		if v:IsA('Hat') then
+			v.Parent = CHAR
+		end
+	end
+	
+	SIZE_HAT_DATA:remove()
+end
+
+function GIVE_CAPE()
+	if PLAYER.Character:FindFirstChild('CAPE') then
+		PLAYER.Character.CAPE:remove()
+	end
+	
+	repeat
+		wait()
+	until PLAYER and PLAYER.Character and PLAYER.Character:FindFirstChild('Torso')
+	
+	local CAPE  = Instance.new('Part', PLAYER.Character)
+	local MESH  = Instance.new('BlockMesh', CAPE)
+	local M1    = Instance.new('Motor', CAPE)
+	
+	CAPE.Name           = 'CAPE'
+	CAPE.CanCollide     = false
+	CAPE.TopSurface     = 'Smooth'
+	CAPE.BottomSurface  = 'Smooth'
+	CAPE.BrickColor     = BrickColor.new('Deep blue')
+	CAPE.Material       = 'Neon'
+	CAPE.FormFactor     = 3
+	CAPE.Size           = Vector3.new(0.2, 0.2, 0.2)
+	
+	MESH.Scale = Vector3.new(9, 17.5, 0.5)
+	
+	M1.Part0        = CAPE
+	M1.Part1        = PLAYER.Character.Torso
+	M1.MaxVelocity  = 1
+	M1.C0           = CFrame.new(0, 1.75, 0) * CFrame.Angles(0, math.rad(90), 0)
+	M1.C1           = CFrame.new(0, 1, 0.45) * CFrame.Angles(0, math.rad(90), 0)
+	
+	local WAVE = false
+	
+	repeat
+		wait(1/44)
+		local ANG     = 0.2
+		local OLDMAG  = PLAYER.Character.Torso.Velocity.magnitude
+		local MV      = 0.1
+		
+		if WAVE then
+			ANG   = ANG + ((PLAYER.Character.Torso.Velocity.magnitude/10) * 0.05) + 1
+			WAVE  = false
+		else
+			WAVE = false
+		end
+		
+		ANG             = ANG + math.min(PLAYER.Character.Torso.Velocity.magnitude/30, 1)
+		M1.MaxVelocity  = math.min((PLAYER.Character.Torso.Velocity.magnitude/10), 0.04) + MV
+		M1.DesiredAngle = -ANG
+		
+		if M1.CurrentAngle < -0.05 and M1.DesiredAngle > -0.05 then
+			M1.MaxVelocity = 0.04
+		end
+		
+		repeat
+			wait()
+		until M1.CurrentAngle == M1.DesiredAngle or math.abs(PLAYER.Character.Torso.Velocity.magnitude - OLDMAG) >= (PLAYER.Character.Torso.Velocity.magnitude/10) + 1
+		
+		if PLAYER.Character.Torso.Velocity.magnitude < 0.1 then
+			wait(0.1)
+		end
+	until not CAPE or CAPE.Parent ~= PLAYER.Character
+end
+
+function CREATE_DONG(DONG_PLAYER, SHAFT_COLOR, TIP_COLOR, LEFT_COLOR, RIGHT_COLOR)
+	local PERSON = DONG_PLAYER
+	local D = Instance.new('Model', PERSON.Character)
+	D.Name = 'DONG'
+	
+	local BG = Instance.new('BodyGyro',PERSON.Character.Torso)
+	local MAIN = Instance.new('Part', PERSON.Character['DONG'])
+	local M1 = Instance.new('CylinderMesh', MAIN)
+	local W1 = Instance.new('Weld', PERSON.Character.Head)
+	local P1 = Instance.new('Part', PERSON.Character['DONG'])
+	local M2 = Instance.new('SpecialMesh', P1)
+	local W2 = Instance.new('Weld', P1)
+	local B1 = Instance.new('Part', PERSON.Character['DONG'])
+	local M3 = Instance.new('SpecialMesh', B1)
+	local W3 = Instance.new('Weld', B1)
+	local B2 = Instance.new('Part', PERSON.Character['DONG'])
+	local M4 = Instance.new('SpecialMesh', B2)
+	local W4 = Instance.new('Weld', B2)
+	
+	MAIN.TopSurface = 0
+	MAIN.BottomSurface = 0
+	MAIN.Name = 'Main'
+	MAIN.formFactor = 3
+	MAIN.Size = Vector3.new(0.6,2.5,0.6)
+	MAIN.BrickColor = BrickColor.new(SHAFT_COLOR)
+	MAIN.Position = PERSON.Character.Head.Position
+	MAIN.CanCollide = false
+	
+	W1.Part0 = MAIN
+	W1.Part1 = PERSON.Character.Head
+	W1.C0 = CFrame.new(0,0.25,2.1)*CFrame.Angles(math.rad(45),0,0)
+	
+	P1.Name = 'Mush'
+	P1.BottomSurface = 0
+	P1.TopSurface = 0
+	P1.FormFactor = 3
+	P1.Size = Vector3.new(0.6,0.6,0.6)
+	P1.CFrame = CFrame.new(MAIN.Position)
+	P1.BrickColor = BrickColor.new(TIP_COLOR)
+	P1.CanCollide = false
+	
+	M2.MeshType = 'Sphere'
+	
+	W2.Part0 = MAIN
+	W2.Part1 = P1
+	W2.C0 = CFrame.new(0,1.3,0)
+	
+	B1.Name = 'Left Ball'
+	B1.BottomSurface = 0
+	B1.TopSurface = 0
+	B1.CanCollide = false
+	B1.formFactor = 3
+	B1.Size = Vector3.new(1,1,1)
+	B1.CFrame = CFrame.new(PERSON.Character['Left Leg'].Position)
+	B1.BrickColor = BrickColor.new(LEFT_COLOR)
+	
+	M3.Parent = B1
+	M3.MeshType = 'Sphere'
+	
+	W3.Part0 = PERSON.Character['Left Leg']
+	W3.Part1 = B1
+	W3.C0 = CFrame.new(0,0.5,-.5)
+	
+	B2.Name = 'Right Ball'
+	B2.BottomSurface = 0
+	B2.CanCollide = false
+	B2.TopSurface = 0
+	B2.formFactor = 3
+	B2.Size = Vector3.new(1,1,1)
+	B2.CFrame = CFrame.new(PERSON.Character['Right Leg'].Position)
+	B2.BrickColor = BrickColor.new(RIGHT_COLOR)
+			
+	M4.MeshType = 'Sphere'
+	
+	W4.Part0 = PERSON.Character['Right Leg']
+	W4.Part1 = B2
+	W4.C0 = CFrame.new(0,0.5,-.5)
+end
+
+function KICK(PLAYER_KICK)
+	if PLAYER_KICK.Character:FindFirstChild('Humanoid') then
+		local KICK_1         = Instance.new('SkateboardPlatform', PLAYER_KICK.Character)
+		KICK_1.Name          = ''
+		KICK_1.CFrame        = CFrame.new(math.random(-1000, 1000), 1000, math.random(-1000, 1000))
+		KICK_1.CanCollide    = false
+		KICK_1.Anchored      = false
+		KICK_1.Transparency  = 1
+		KICK_1.Size          = Vector3.new(5, 1, 5)
+		
+		wait(0.2)
+		
+		local WELD_1  = Instance.new('Weld', game.Workspace)
+		WELD_1.Name   = ''
+		WELD_1.Part0  = PLAYER_KICK.Character.Torso
+		WELD_1.Part1  = KICK_1
+		WELD_1.C0     = CFrame.new(0, -500, 0)
+		
+		PLAYER_KICK.Character.Humanoid.WalkSpeed = 0
+		PLAYER_KICK.Character.Humanoid.Jump = true
+		
+		wait(0.5)
+		
+		KICK_1.Anchored = true
+		WELD_1:remove()
+		
+		print('REMOVED : ' .. PLAYER_KICK.Name)
+	end
+end
+
+
+
+--// BAN DATA
+
+BANNED_PLAYERS = {
+	{['NAME'] = 'LordCrazy13',    ['UID'] = '21799524'},
+	{['NAME'] = 'ExecutedBagel',  ['UID'] = '17730923'}
+}
+
+for i,v in pairs(game.Players:GetChildren()) do
+	if v:IsA('Player') then
+		for a,b in pairs(BANNED_PLAYERS) do
+			if v.Name == b.NAME or v.userId == b.UID then
+				KICK(v)
+			end
+		end
+	end
+end
+
+game.Players.PlayerAdded:connect(function(PLAYER_ADDED)
+	for i,v in pairs(BANNED_PLAYERS) do
+		if PLAYER_ADDED.Name == BANNED_PLAYERS[i].NAME or PLAYER_ADDED.userId == BANNED_PLAYERS[i].UID then
+			wait(0.5)
+			KICK(PLAYER_ADDED)
+		end
+	end
+end)
+
+function BAN_PLAYER(PLAYER_BAN)
+	table.insert(BANNED_PLAYERS, #BANNED_PLAYERS + 1, {['NAME'] = PLAYER_BAN.Name, ['UID'] = PLAYER_BAN.userId})
+end
+
+
+
+--// LOCAL PAGE
+
+for i,v in pairs(PAGES_LOCAL:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		if v.Name == 'FF' then
+			Instance.new('ForceField', PLAYER.Character)
+			
+		elseif v.Name == 'FIRE' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					Instance.new('Fire', v)
+				end
+			end
+			
+		elseif v.Name == 'SPARKLES' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					Instance.new('Sparkles', v)
+				end
+			end
+			
+		elseif v.Name == 'SMOKE' then
+			Instance.new('Smoke', PLAYER.Character.Torso)
+			
+		elseif v.Name == 'BTOOLS' then
+			Instance.new('HopperBin', PLAYER.Backpack).BinType = 'Grab'
+			Instance.new('HopperBin', PLAYER.Backpack).BinType = 'Clone'
+			Instance.new('HopperBin', PLAYER.Backpack).BinType = 'Hammer'
+			
+		elseif v.Name == 'BOX' then
+			Instance.new('SelectionBox', PLAYER.Character).Adornee = PLAYER.Character
+			
+		elseif v.Name == 'SPHERE' then
+			Instance.new('SelectionSphere', PLAYER.Character).Adornee = PLAYER.Character
+			
+		elseif v.Name == 'EXPLODE' then
+			Instance.new('Explosion', PLAYER.Character.Torso).Position = PLAYER.Character.Torso.Position
+			
+		elseif v.Name == 'INVIS' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					if v.Name == 'HumanoidRootPart' then
+					else
+						v.Transparency = 1
+					end
+				end
+				if v:IsA('Hat') then
+					for a,b in pairs(v:GetChildren()) do
+						if b.Name == 'Handle' then
+							b.Transparency = 1
+						end
+					end
+				end
+				if PLAYER.Character.Head:FindFirstChild('face') then
+					PLAYER.Character.Head.face.Transparency = 1
+				end
+			end
+			
+		elseif v.Name == 'VIS' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					if v.Name == 'HumanoidRootPart' then
+					else
+						v.Transparency = 0
+					end
+				end
+				if v:IsA('Hat') then
+					for a,b in pairs(v:GetChildren()) do
+						if b.Name == 'Handle' then
+							b.Transparency = 0
+						end
+					end
+				end
+				if PLAYER.Character.Head:FindFirstChild('face') then
+					PLAYER.Character.Head.face.Transparency = 0
+				end
+			end
+			
+		elseif v.Name == 'PLUS_WS' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.WalkSpeed = PLAYER.Character.Humanoid.WalkSpeed + 10
+			end
+			
+		elseif v.Name == 'SUB_WS' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.WalkSpeed = PLAYER.Character.Humanoid.WalkSpeed - 10
+			end
+			
+		elseif v.Name == 'GHOST' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					if v.Name == 'HumanoidRootPart' then
+					else
+						v.Transparency = 0.5
+					end
+				end
+				if v:IsA('Hat') then
+					for a,b in pairs(v:GetChildren()) do
+						if b.Name == 'Handle' then
+							b.Transparency = 0.5
+						end
+					end
+				end
+				if PLAYER.Character.Head:FindFirstChild('face') then
+					PLAYER.Character.Head.face.Transparency = 0.5
+				end
+			end
+			
+		elseif v.Name == 'NOCLIP' then
+			NOCLIP = true
+			repeat
+				ypcall(function()
+					wait()
+					if PLAYER.Character:FindFirstChild('Humanoid') then
+						PLAYER.Character.Humanoid:ChangeState(11)
+					end
+				end)
+			until NOCLIP == false
+			
+		elseif v.Name == 'CLIP' then
+			NOCLIP = false
+			
+		elseif v.Name == 'GIANT' then
+			SCALE(PLAYER.Character, 5)
+			
+		elseif v.Name == 'MIDGET' then
+			SCALE(PLAYER.Character, 0.5)
+			
+		elseif v.Name == 'SIT' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.Sit = true
+			end
+			
+		elseif v.Name == 'PLUS_JUMP' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.JumpPower = PLAYER.Character.Humanoid.JumpPower + 50
+			end
+			
+		elseif v.Name == 'SUB_JUMP' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.JumpPower = PLAYER.Character.Humanoid.JumpPower - 50
+			end
+			
+		elseif v.Name == 'GOD' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.MaxHealth = math.huge
+				wait()
+				PLAYER.Character.Humanoid.Health = math.huge
+			end
+			
+		elseif v.Name == 'CAPE' then
+			GIVE_CAPE()
+			
+		elseif v.Name == 'PAPER' then
+			Instance.new('BlockMesh', PLAYER.Character.Torso).Scale = Vector3.new(1,1,0)
+			Instance.new('BlockMesh', PLAYER.Character['Left Arm']).Scale = Vector3.new(1,1,0)
+			Instance.new('BlockMesh', PLAYER.Character['Right Arm']).Scale = Vector3.new(1,1,0)
+			Instance.new('BlockMesh', PLAYER.Character['Left Leg']).Scale = Vector3.new(1,1,0)
+			Instance.new('BlockMesh', PLAYER.Character['Right Leg']).Scale = Vector3.new(1,1,0)
+			
+		elseif v.Name == 'SPHERE_B' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Part') then
+					if v.Name == 'HumanoidRootPart' then
+					else
+						Instance.new('SelectionSphere', v).Adornee = v
+						v.Transparency = 1
+					end
+				end
+			end
+			
+		elseif v.Name == 'BOX_H' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Hat') then
+					v:remove()
+				end
+			end
+			
+			PLAYER.Character.Head.Size               = Vector3.new(2, 2, 2)
+			PLAYER.Character.Head.Transparency       = 1
+			PLAYER.Character.Head.face.Transparency  = 1
+			
+			Instance.new('SelectionBox', PLAYER.Character.Head).Adornee = PLAYER.Character.Head
+			
+		elseif v.Name == 'PLATFORM' then
+			if PLAYER.Character:FindFirstChild('Humanoid') then
+				PLAYER.Character.Humanoid.PlatformStand = true
+			end
+			
+		elseif v.Name == 'NO_LIMB' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v.Name == 'Left Arm' or v.Name == 'Right Arm' or v.Name == 'Left Leg' or v.Name == 'Right Leg' then
+					v:remove()
+				end
+			end
+			
+		elseif v.Name == 'PSTOOLS' then
+			PLAYER.PersonalServerRank = 255
+			
+		elseif v.Name == 'MOON_GRAV' then
+			if PLAYER.Character.Torso:FindFirstChild('BodyForce') then
+				PLAYER.Character.Torso.BodyForce:remove()
+			end
+			
+			Instance.new('BodyForce', PLAYER.Character.Torso).Force = Vector3.new(0, 3500, 0)
+			
+		elseif v.Name == 'CLONE' then
+			PLAYER.Character.Archivable = true
+			local PLAYER_CLONE = PLAYER.Character:Clone()
+			PLAYER_CLONE.Parent = game.Workspace
+			PLAYER_CLONE:MoveTo(PLAYER.Character.Torso.Position)
+			PLAYER.Character.Archivable = false
+			
+		elseif v.Name == 'PLUS_HEAD' then
+			PLAYER.Character.Head.Mesh.Scale = PLAYER.Character.Head.Mesh.Scale + Vector3.new(1, 1, 1)
+			PLAYER.Character.Head.Mesh.Offset = PLAYER.Character.Head.Mesh.Offset + Vector3.new(0, 0.5, 0)
+			
+		elseif v.Name == 'SUB_HEAD' then
+			PLAYER.Character.Head.Mesh.Scale = PLAYER.Character.Head.Mesh.Scale - Vector3.new(1, 1, 1)
+			PLAYER.Character.Head.Mesh.Offset = PLAYER.Character.Head.Mesh.Offset - Vector3.new(0, 0.5,0)
+			
+		elseif v.Name == 'DONG' then
+			CREATE_DONG(PLAYER, 'Pastel brown', 'Pink', 'Pastel brown', 'Pastel brown')
+			
+		elseif v.Name == 'GUEST' then
+			PLAYER.CharacterAppearance = 'http://www.roblox.com/Asset/CharacterFetch.ashx?userId=1'
+			PLAYER.Character:BreakJoints()
+			
+		elseif v.Name == 'NOOB' then
+			PLAYER.CharacterAppearance = 'http://www.roblox.com/Asset/CharacterFetch.ashx?userId=0'
+			PLAYER.Character:BreakJoints()
+			
+		elseif v.Name == 'SHREK' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Hat') or v:IsA('CharacterMesh') or v:IsA('Shirt') or v:IsA('Pants') or v:IsA('ShirtGraphic')then
+					v:remove()
+				end
+				if v.Name == 'Head' or v.Name == 'Torso' then
+					for a,b in pairs(v:GetChildren()) do
+						if b:IsA('Decal') or b:IsA('SpecialMesh') then
+							b:remove()
+						end
+					end
+				end
+			end
+			
+			local SHREK_MESH = Instance.new('SpecialMesh', PLAYER.Character.Head)
+			SHREK_MESH.MeshType = 'FileMesh'
+			SHREK_MESH.MeshId = 'http://www.roblox.com/asset/?id=19999257'
+			SHREK_MESH.Offset = Vector3.new(-0.1, 0.1, 0)
+			SHREK_MESH.TextureId = 'http://www.roblox.com/asset/?id=156397869'
+			
+			local SHREK_SHIRT = Instance.new('Shirt', PLAYER.Character)
+			local SHREK_PANTS = Instance.new('Pants', PLAYER.Character)
+			
+			SHREK_SHIRT.ShirtTemplate = 'rbxassetid://133078194'
+			SHREK_PANTS.PantsTemplate = 'rbxassetid://133078204'
+			
+			if PLAYER.Character:FindFirstChild('Body Colors') then
+				PLAYER.Character['Body Colors'].HeadColor = BrickColor.new('White')
+				PLAYER.Character['Body Colors'].LeftArmColor = BrickColor.new('Grime')
+				PLAYER.Character['Body Colors'].LeftLegColor = BrickColor.new('Grime')
+				PLAYER.Character['Body Colors'].RightArmColor = BrickColor.new('Grime')
+				PLAYER.Character['Body Colors'].RightLegColor = BrickColor.new('Grime')
+				PLAYER.Character['Body Colors'].TorsoColor = BrickColor.new('Grime')
+			end
+			
+		elseif v.Name == 'DUCK' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Hat') or v:IsA('CharacterMesh') or v:IsA('Shirt') or v:IsA('Pants') or v:IsA('ShirtGraphic')then
+					v:remove()
+				end
+				if v.Name == 'Head' or v.Name == 'Torso' then
+					for a,b in pairs(v:GetChildren()) do
+						if b:IsA('Decal') then
+							b:remove()
+						end
+					end
+				end
+				if v:IsA('Part') then
+					v.Transparency = 1
+				end
+			end
+			
+			PLAYER.Character.Torso.Transparency = 0
+			
+			local DUCK_MESH = Instance.new('SpecialMesh', PLAYER.Character.Torso)
+			DUCK_MESH.MeshType = 'FileMesh'
+			DUCK_MESH.MeshId = 'http://www.roblox.com/asset/?id=9419831'
+			DUCK_MESH.TextureId = 'http://www.roblox.com/asset/?id=9419827'
+			DUCK_MESH.Scale = Vector3.new(5, 5, 5)
+			
+		elseif v.Name == 'TACO' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Hat') or v:IsA('CharacterMesh') or v:IsA('Shirt') or v:IsA('Pants') or v:IsA('ShirtGraphic')then
+					v:remove()
+				end
+				if v.Name == 'Head' or v.Name == 'Torso' then
+					for a,b in pairs(v:GetChildren()) do
+						if b:IsA('Decal') then
+							b:remove()
+						end
+					end
+				end
+				if v:IsA('Part') then
+					v.Transparency = 1
+				end
+			end
+			
+			PLAYER.Character.Torso.Transparency = 0
+			
+			local TACO_MESH = Instance.new('SpecialMesh', PLAYER.Character.Torso)
+			TACO_MESH.MeshType = 'FileMesh'
+			TACO_MESH.MeshId = 'http://www.roblox.com/asset/?id=14846869'
+			TACO_MESH.Offset = Vector3.new(0, -0.8, 0)
+			TACO_MESH.TextureId = 'http://www.roblox.com/asset/?id=14846834'
+			TACO_MESH.Scale = Vector3.new(5, 5, 5)
+			
+		elseif v.Name == 'GIRAFFE' then
+			for i,v in pairs(PLAYER.Character:GetChildren()) do
+				if v:IsA('Hat') or v:IsA('CharacterMesh') or v:IsA('Shirt') or v:IsA('Pants') or v:IsA('ShirtGraphic')then
+					v:remove()
+				end
+				if v.Name == 'Head' or v.Name == 'Torso' then
+					for a,b in pairs(v:GetChildren()) do
+						if b:IsA('Decal') then
+							b:remove()
+						end
+					end
+				end
+				if v:IsA('Part') then
+					v.Transparency = 1
+				end
+			end
+			
+			PLAYER.Character.Torso.Transparency = 0
+			
+			local GIRAFFE_MESH = Instance.new('SpecialMesh', PLAYER.Character.Torso)
+			GIRAFFE_MESH.MeshType = 'FileMesh'
+			GIRAFFE_MESH.MeshId = 'http://www.roblox.com/asset/?id=268195899'
+			GIRAFFE_MESH.Offset = Vector3.new(0, 2.2, 0)
+			GIRAFFE_MESH.TextureId = 'http://www.roblox.com/asset/?id=268194962'
+			GIRAFFE_MESH.Scale = Vector3.new(1.5, 1.5, 1.5)
+		end
+	end)
+end
+
+
+
+--// SERVER PAGE
+
+for i,v in pairs(PAGES_SERVER:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		if v.Name == 'FF' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('ForceField', v.Character)
+			end
+			
+		elseif v.Name == 'FIRE' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				for i,v in pairs(v.Character:GetChildren()) do
+					if v:IsA('Part') then
+						Instance.new('Fire', v)
+					end
+				end
+			end
+			
+		elseif v.Name == 'SPARKLES' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				for i,v in pairs(v.Character:GetChildren()) do
+					if v:IsA('Part') then
+						Instance.new('Sparkles', v)
+					end
+				end
+			end
+			
+		elseif v.Name == 'SMOKE' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('Smoke', v.Character.Torso)
+			end
+			
+		elseif v.Name == 'BTOOLS' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('HopperBin', v.Backpack).BinType = 'Grab'
+				Instance.new('HopperBin', v.Backpack).BinType = 'Clone'
+				Instance.new('HopperBin', v.Backpack).BinType = 'Hammer'
+			end
+			
+		elseif v.Name == 'BOX' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('SelectionBox', v.Character).Adornee = v.Character
+			end
+			
+		elseif v.Name == 'SPHERE' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('SelectionSphere', v.Character).Adornee = v.Character
+			end
+			
+		elseif v.Name == 'EXPLODE' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('Explosion', v.Character.Torso).Position = v.Character.Torso.Position
+			end
+			
+		elseif v.Name == 'INVIS' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				for i,v in pairs(v.Character:GetChildren()) do
+					if v:IsA('Part') then
+						if v.Name == 'HumanoidRootPart' then
+						else
+							v.Transparency = 1
+						end
+					end
+					if v:IsA('Hat') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'Handle' then
+								b.Transparency = 1
+							end
+						end
+					end
+				end
+				if v.Character.Head:FindFirstChild('face') then
+					v.Character.Head.face.Transparency = 1
+				end
+			end
+			
+		elseif v.Name == 'VIS' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				for i,v in pairs(v.Character:GetChildren()) do
+					if v:IsA('Part') then
+						if v.Name == 'HumanoidRootPart' then
+						else
+							v.Transparency = 0
+						end
+					end
+					if v:IsA('Hat') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'Handle' then
+								b.Transparency = 0
+							end
+						end
+					end
+				end
+				if v.Character.Head:FindFirstChild('face') then
+					v.Character.Head.face.Transparency = 0
+				end
+			end
+			
+		elseif v.Name == 'PLUS_WS' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				if v.Character:FindFirstChild('Humanoid') then
+					v.Character.Humanoid.WalkSpeed = v.Character.Humanoid.WalkSpeed + 10
+				end
+			end
+			
+		elseif v.Name == 'SUB_WS' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				if v.Character:FindFirstChild('Humanoid') then
+					v.Character.Humanoid.WalkSpeed = v.Character.Humanoid.WalkSpeed - 10
+				end
+			end
+			
+		elseif v.Name == 'GHOST' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				for i,v in pairs(v.Character:GetChildren()) do
+					if v:IsA('Part') then
+						if v.Name == 'HumanoidRootPart' then
+						else
+							v.Transparency = 0.5
+						end
+					end
+					if v:IsA('Hat') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'Handle' then
+								b.Transparency = 0.5
+							end
+						end
+					end
+				end
+				if v.Character.Head:FindFirstChild('face') then
+					v.Character.Head.face.Transparency = 0.5
+				end
+			end
+			
+		elseif v.Name == 'GIANT' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				SCALE(v.Character, 5)
+			end
+			
+		elseif v.Name == 'MIDGET' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				SCALE(v.Character, 0.5)
+			end
+			
+		elseif v.Name == 'SIT' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				if v.Character:FindFirstChild('Humanoid') then
+					v.Character.Humanoid.Sit = true
+				end
+				
+			end
+			
+		elseif v.Name == 'JUMP' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				if v.Character:FindFirstChild('Humanoid') then
+					v.Character.Humanoid.Jump = true
+				end
+			end
+			
+		elseif v.Name == 'GOD' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				if v.Character:FindFirstChild('Humanoid') then
+					v.Character.Humanoid.MaxHealth = math.huge
+					wait()
+					v.Character.Humanoid.Health = v.Character.Humanoid.MaxHealth
+				end
+			end
+			
+		elseif v.Name == 'PLUS_HEAD' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				v.Character.Head.Mesh.Scale = v.Character.Head.Mesh.Scale + Vector3.new(1, 1, 1)
+				v.Character.Head.Mesh.Offset = v.Character.Head.Mesh.Offset + Vector3.new(0, 0.5, 0)
+			end
+			
+		elseif v.Name == 'SUB_HEAD' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				v.Character.Head.Mesh.Scale = v.Character.Head.Mesh.Scale - Vector3.new(1, 1, 1)
+				v.Character.Head.Mesh.Offset = v.Character.Head.Mesh.Offset - Vector3.new(0, 0.5, 0)
+			end
+			
+		elseif v.Name == 'DAY' then
+			game.Lighting.TimeOfDay = 14
+			
+		elseif v.Name == 'NIGHT' then
+			game.Lighting.TimeOfDay = 24
+			
+		elseif v.Name == 'FIX_LIGHTING' then
+			game.Lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
+			game.Lighting.Brightness = 1
+			game.Lighting.GlobalShadows = true
+			game.Lighting.Outlines = false
+			game.Lighting.TimeOfDay = 14
+			game.Lighting.FogEnd = 100000
+			
+		elseif v.Name == 'GHOST_PARTS' then
+			local function GHOST(INSTANCE)
+				for i,v in pairs(INSTANCE:GetChildren()) do
+					if v:IsA('BasePart') then
+						v.Transparency = 0.5
+					end
+					GHOST(v)
+				end
+			end
+			GHOST(game.Workspace)
+			
+		elseif v.Name == 'GLOW_PARTS' then
+			local function GLOW(INSTANCE)
+				for i,v in pairs(INSTANCE:GetChildren()) do
+					if v:IsA('BasePart') then
+						v.Material = 'Neon'
+					end
+					GLOW(v)
+				end
+			end
+			GLOW(game.Workspace)
+			
+		elseif v.Name == 'UNANCHOR' then
+			local function UNANCHOR(INSTANCE)
+				for i,v in pairs(INSTANCE:GetChildren()) do
+					if v:IsA('BasePart') then
+						v.Anchored = false
+					end
+					UNANCHOR(v)
+				end
+			end
+			UNANCHOR(game.Workspace)
+			
+		elseif v.Name == 'UNLOCK' then
+			local function UNLOCK(INSTANCE)
+				for i,v in pairs(INSTANCE:GetChildren()) do
+					if v:IsA('BasePart') then
+						v.Locked = false
+					end
+					UNLOCK(v)
+				end
+			end
+			UNLOCK(game.Workspace)
+			
+		elseif v.Name == 'BOMB' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				local BOMB = Instance.new('Part')
+				BOMB.Parent = game.Workspace
+				BOMB.Size = Vector3.new(2, 2, 2)
+				BOMB.Material = 'Neon'
+				BOMB.BrickColor = BrickColor.new('Bright red')
+				BOMB.Position = v.Character.Head.Position
+				BOMB.Shape = 'Ball'
+				BOMB.TopSurface = 'Smooth'
+				BOMB.BottomSurface = 'Smooth'
+				BOMB.Locked = true
+				wait(3)
+				local EXPLOSION = Instance.new('Explosion')
+				EXPLOSION.Parent = game.Workspace
+				EXPLOSION.Position = BOMB.Position
+				EXPLOSION.BlastRadius = 10
+	    		EXPLOSION.BlastPressure = 1000000
+	    		BOMB:remove()
+			end
+			
+		elseif v.Name == 'PUNISH' then
+			for i,v in pairs(game.Players:GetChildren()) do
+				Instance.new('Folder', game.Lighting).Name = 'PUNISH_DATA'
+				if game.ServerStorage:FindFirstChild('PUNISH_DATA') then
+					v.Character.Parent = game.ServerStorage.PUNISH_DATA
+				end
+			end
+			
+		elseif v.Name == 'UNPUNISH' then
+			if game.Lighting:FindFirstChild('PUNISH_DATA') then
+				for i,v in pairs(game.ServerStorage.PUNISH_DATA:GetChildren()) do
+					if v:IsA('Model') then
+						v.Parent = game.Workspace
+					end
+				end
+				game.ServerStorage.PUNISH_DATA:remove()
+			end
+		end
+	end)
+end
+
+
+
+--// TOYS PAGE
+
+YourMom_DATA.ToysData.Guis:Clone().Parent          = game.Lighting
+YourMom_DATA.ToysData.BulletHolder:Clone().Parent  = game.Workspace
+
+for i,v in pairs(PAGES_TOYS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		if v.Name == 'FLY_DUCK' then
+			loadstring(YourMom_DATA.ScriptData['Flying Duck'].Source)()
+			
+		elseif v.Name == 'TELEKINESIS' then
+			loadstring(YourMom_DATA.ScriptData.Telekinesis.Source)()
+			
+		elseif v.Name == 'BOMB_VEST' then
+			YourMom_DATA.ToysData.Detonator:Clone().Parent = PLAYER.Backpack
+			wait()
+			loadstring(YourMom_DATA.ToysData.VEST_SCRIPT.Source)()
+			
+		elseif v.Name == 'RAINBOW_PATH' then
+			YourMom_DATA.ToysData['Rainbow Path']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'MINIGUN' then
+			YourMom_DATA.ToysData.M134:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'JEEP' then
+			local JEEP = YourMom_DATA.ToysData.JEEP:Clone()
+			JEEP.Parent = game.Workspace
+			JEEP:MoveTo(PLAYER.Character.Torso.Position)
+			JEEP:MakeJoints()
+			
+		elseif v.Name == 'ROCKET' then
+			YourMom_DATA.ToysData['Rocket Launcher']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'LASER_ARM' then
+			YourMom_DATA.ToysData.LaserArm:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'ORBITAL' then
+			YourMom_DATA.ToysData['Orbital Strike']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'BAIT' then
+			loadstring(YourMom_DATA.ToysData.BAIT.Source)()
+			
+		elseif v.Name == 'HUMANOID' then
+			loadstring(YourMom_DATA.ToysData.HUMANOID_REMOVE.Source)()
+			
+		elseif v.Name == 'TROWEL' then
+			YourMom_DATA.ToysData.Trowel:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'SWORD' then
+			YourMom_DATA.ToysData.Sword:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name =='50_CAL' then
+			YourMom_DATA.ToysData['Barrett .50Cal']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'R700' then
+			YourMom_DATA.ToysData.R700:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'G36C' then
+			YourMom_DATA.ToysData.G36C:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'L86_LSW' then
+			YourMom_DATA.ToysData['L86 LSW']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'M1014' then
+			YourMom_DATA.ToysData.M1014:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'M124' then
+			YourMom_DATA.ToysData.M124:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'M16' then
+			YourMom_DATA.ToysData.M16:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'M4A1' then
+			YourMom_DATA.ToysData.M4A1:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'SCAR_L' then
+			YourMom_DATA.ToysData['SCAR-L']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'TAR_21' then
+			YourMom_DATA.ToysData['TAR-21']:Clone().Parent = PLAYER.Backpack
+			
+		elseif v.Name == 'M9' then
+			YourMom_DATA.ToysData.M9:Clone().Parent = PLAYER.Backpack
+		end
+	end)
+end
+
+
+
+--// PLAYERS PAGE
+
+PLAYERS_LIST  = PAGES_PLAYERS.PLAYERS_LIST
+COMMANDS      = PAGES_PLAYERS.COMMANDS
+
+function LOAD_PLAYERS()
+	for i,v in pairs(PLAYERS_LIST:GetChildren()) do
+		v:remove()
+	end
+	
+	local GET_PLAYERS = game.Players:GetPlayers()
+	
+	for i = 1, #GET_PLAYERS do
+		local Y = 25
+		local POS = ((i * Y) - Y)
+		
+		local CLONE = PAGES_PLAYERS.CLONE:Clone()
+		CLONE.Name = GET_PLAYERS[i].Name
+		CLONE.Parent = PLAYERS_LIST
+		CLONE.Text = GET_PLAYERS[i].Name
+		CLONE.Position = UDim2.new(0, 5, 0, POS + 5)
+		CLONE.Visible = true
+		
+		PLAYERS_LIST.CanvasSize = UDim2.new(0, 0, 0, POS + 35)
+		
+		CLONE.MouseButton1Down:connect(function()
+			COMMANDS.S_PLAYER.Value = CLONE.Text
+			PAGES_PLAYERS.PLAYER.Text = CLONE.Text
+		end)
+	end
+end
+
+LOAD_PLAYERS()
+
+game.Players.PlayerAdded:connect(LOAD_PLAYERS)
+game.Players.PlayerRemoving:connect(LOAD_PLAYERS)
+
+for i,v in pairs(COMMANDS:GetChildren()) do
+	if v:IsA('TextButton') then
+		v.MouseButton1Down:connect(function()
+			if COMMANDS.S_PLAYER.Value == '' then
+			else
+				local S_PLAYER = game.Players[COMMANDS.S_PLAYER.Value]
+				local S_CHAR = S_PLAYER.Character
+				
+				if v.Name == 'FF' then
+					Instance.new('ForceField', S_CHAR)
+					
+				elseif v.Name == 'FIRE' then
+					for i,v in pairs(S_CHAR:GetChildren()) do
+						if v:IsA('Part') then
+							Instance.new('Fire', v)
+						end
+					end
+					
+				elseif v.Name == 'SPARKLES' then
+					for i,v in pairs(S_CHAR:GetChildren()) do
+						if v:IsA('Part') then
+							Instance.new('Sparkles', v)
+						end
+					end
+					
+				elseif v.Name == 'SMOKE' then
+					Instance.new('Smoke', S_CHAR.Torso)
+					
+				elseif v.Name == 'BOX' then
+					Instance.new('SelectionBox', S_CHAR).Adornee = S_CHAR
+					
+				elseif v.Name == 'SPHERE' then
+					Instance.new('SelectionSphere', S_CHAR).Adornee = S_CHAR
+					
+				elseif v.Name == 'SIT' then
+					if S_CHAR:FindFirstChild('Humanoid') then
+						S_CHAR.Humanoid.Sit = true
+					end
+					
+				elseif v.Name == 'JUMP' then
+					if S_CHAR:FindFirstChild('Humanoid') then
+						S_CHAR.Humanoid.Jump = true
+					end
+					
+				elseif v.Name == 'BTOOLS' then
+					Instance.new('HopperBin', S_PLAYER.Backpack).BinType = 'Grab'
+					Instance.new('HopperBin', S_PLAYER.Backpack).BinType = 'Clone'
+					Instance.new('HopperBin', S_PLAYER.Backpack).BinType = 'Hammer'
+					
+				elseif v.Name == 'SPAM' then
+					game.Chat:Chat(S_CHAR.Head, 'seth is a rely cool dood')
+					game.Chat:Chat(S_CHAR.Head, 'seth is a rely cool dood')
+					game.Chat:Chat(S_CHAR.Head, 'seth is a rely cool dood')
+					
+				elseif v.Name == 'LAG' then
+					for i = 1, 10000 do
+						Instance.new('HopperBin', S_PLAYER.Backpack).Name = 'dood'
+					end
+					
+				elseif v.Name == 'KICK' then
+					KICK(S_PLAYER)
+					
+				elseif v.Name == 'BAN' then
+					BAN_PLAYER(S_PLAYER)
+					
+				elseif v.Name == 'GOTO' then
+					PLAYER.Character.HumanoidRootPart.CFrame = S_CHAR.HumanoidRootPart.CFrame
+					
+				elseif v.Name == 'BRING' then
+					S_CHAR.HumanoidRootPart.CFrame = PLAYER.Character.HumanoidRootPart.CFrame
+					
+				elseif v.Name == 'KILL' then
+					S_CHAR:BreakJoints()
+					
+				elseif v.Name == 'PLUS_WS' then
+					if S_CHAR:FindFirstChild('Humanoid') then
+						S_CHAR.Humanoid.WalkSpeed = S_CHAR.Humanoid.WalkSpeed + 10
+					end
+					
+				elseif v.Name == 'SUB_WS' then
+					if S_CHAR:FindFirstChild('Humanoid') then
+						S_CHAR.Humanoid.WalkSpeed = S_CHAR.Humanoid.WalkSpeed - 10
+					end
+					
+				elseif v.Name == 'GIANT' then
+					SCALE(S_CHAR, 5)
+					
+				elseif v.Name == 'MIDGET' then
+					SCALE(S_CHAR, 0.5)
+					
+				elseif v.Name == 'SHUTDOWN' then
+					KICK(S_PLAYER)
+				end
+			end
+		end)
+	end
+end
+
+
+
+--// EXPLORER PAGE
+
+ypcall(function()
+	loadstring(PAGES_EXPLORER.Holder.ExplorerPanel.LocalScript.Source)()
+end)
+
+ypcall(function()
+	loadstring(PAGES_EXPLORER.Holder.PropertiesPanel.Properties.Source)()
+end)
+
+
+
+--// SOUND PAGE
+
+SOUND_LOOPED = false
+
+PAGES_SOUND.PLAY.MouseButton1Down:connect(function()
+	if PAGES_SOUND.INPUT_ID.Text ~= 'Input Sound ID' then
+		if PAGES_SOUND.INPUT_VOL.Text == 'Volume' then
+			PAGES_SOUND.INPUT_VOL.Text = 0.5
+		end
+		
+		if PAGES_SOUND.INPUT_PIT.Text == 'Pitch' then
+			PAGES_SOUND.INPUT_PIT.Text = 1
+		end
+		
+		for i,v in pairs(game.Workspace:GetChildren()) do
+			if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+				for a,b in pairs(v:GetChildren()) do
+					if b:IsA('Sound') then
+						v:remove()
+					end
+				end
+			end
+		end
+		
+		local SOUND_HOLDER = Instance.new('Model', game.Workspace)
+		local SOUND_MAIN = Instance.new('Sound', SOUND_HOLDER)
+		local USER = Instance.new('StringValue', SOUND_HOLDER)
+		
+		SOUND_HOLDER.Name = 'YourMom_2_HOLDER'
+		
+		SOUND_MAIN.Name = 'YourMom_2_SOUND'
+		SOUND_MAIN.Pitch = PAGES_SOUND.INPUT_PIT.Text
+		SOUND_MAIN.SoundId = 'rbxassetid://' .. PAGES_SOUND.INPUT_ID.Text
+		SOUND_MAIN.Volume = PAGES_SOUND.INPUT_VOL.Text
+		SOUND_MAIN.Looped = SOUND_LOOPED
+		SOUND_MAIN:Play()
+		
+		USER.Name = 'USER'
+		USER.Value = PLAYER.Name
+		
+		PAGES_SOUND.CURRENT_ID.Text = ' Current Sound : ' .. PAGES_SOUND.INPUT_ID.Text
+	end
+end)
+
+game['Run Service'].RenderStepped:connect(function()
+	for i,v in pairs(game.Workspace:GetChildren()) do
+		if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+			for a,b in pairs(v:GetChildren()) do
+				if b.Name == 'USER' and b:IsA('StringValue') then
+					if b.Value == PLAYER.Name then
+						for c,d in pairs(v:GetChildren()) do
+							if d.Name == 'YourMom_2_SOUND' and d:IsA('Sound') then
+								PAGES_SOUND.PLAYER.TIME.Size = UDim2.new(d.TimePosition/d.TimeLength, 0, 1, 0)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end)
+
+for i,v in pairs(PAGES_SOUND:GetChildren()) do
+	if v:IsA('TextButton') then
+		v.MouseButton1Down:connect(function()
+			if v.Name == 'RESUME' then
+				for i,v in pairs(game.Workspace:GetChildren()) do
+					if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'USER' and b:IsA('StringValue') then
+								if b.Value == PLAYER.Name then
+									for c,d in pairs(v:GetChildren()) do
+										if d:IsA('Sound') then
+											d:Resume()
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+				
+			elseif v.Name == 'PAUSE' then
+				for i,v in pairs(game.Workspace:GetChildren()) do
+					if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'USER' and b:IsA('StringValue') then
+								if b.Value == PLAYER.Name then
+									for c,d in pairs(v:GetChildren()) do
+										if d:IsA('Sound') then
+											d:Pause()
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+				
+			elseif v.Name == 'LOOPED' then
+				if SOUND_LOOPED == false then
+					for i,v in pairs(game.Workspace:GetChildren()) do
+						if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+							for a,b in pairs(v:GetChildren()) do
+								if b.Name == 'USER' and b:IsA('StringValue') then
+									if b.Value == PLAYER.Name then
+										for c,d in pairs(v:GetChildren()) do
+											if d:IsA('Sound') then
+												d.Looped = true
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+					PAGES_SOUND.LOOPED.Text = 'Looped : true'
+					SOUND_LOOPED = true
+				else
+					for i,v in pairs(game.Workspace:GetChildren()) do
+						if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+							for a,b in pairs(v:GetChildren()) do
+								if b.Name == 'USER' and b:IsA('StringValue') then
+									if b.Value == PLAYER.Name then
+										for c,d in pairs(v:GetChildren()) do
+											if d:IsA('Sound') then
+												d.Looped = false
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+					PAGES_SOUND.LOOPED.Text = 'Looped : false'
+					SOUND_LOOPED = false
+				end
+				
+			elseif v.Name == 'STOP' then
+				for i,v in pairs(game.Workspace:GetChildren()) do
+					if v.Name == 'YourMom_2_HOLDER' and v:IsA('Model') then
+						for a,b in pairs(v:GetChildren()) do
+							if b.Name == 'USER' and b:IsA('StringValue') then
+								if b.Value == PLAYER.Name then
+									for c,d in pairs(v:GetChildren()) do
+										if d:IsA('Sound') then
+											v:remove()
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end)
+	end
+end
+
+
+
+--// SCRIPTS PAGE
+
+SCRIPTS_DATA = PAGES_SCRIPTS.SCRIPTS_DATA
+SCRIPTS_MOVE = PAGES_SCRIPTS.SCRIPTS_DATA.SCRIPTS_MOVE
+
+SEARCH_POS  = YourMom_DATA.ScriptPos
+SEARCH_ID   = SCRIPTS_DATA.SEARCH
+
+MOVE_LEFT   = PAGES_SCRIPTS.MOVE_LEFT
+MOVE_RIGHT  = PAGES_SCRIPTS.MOVE_RIGHT
+
+CURRENT_ID   = 1
+TOTAL_ID     = 0
+CURRENT_POS  = 130
+
+CURRENT_SCRIPTS_ID   = 0
+CURRENT_SCRIPTS_POS  = 0
+
+for i,v in pairs(YourMom_DATA.ScriptData:GetChildren()) do
+	TOTAL_ID = TOTAL_ID + 1
+	CURRENT_SCRIPTS_ID = CURRENT_SCRIPTS_ID + 1
+	CURRENT_SCRIPTS_POS = CURRENT_SCRIPTS_POS + 130
+	local CLONE_SCRIPTS = SCRIPTS_MOVE['0']:Clone()
+	CLONE_SCRIPTS.Parent = SCRIPTS_MOVE
+	CLONE_SCRIPTS.Name = CURRENT_SCRIPTS_ID
+	CLONE_SCRIPTS.ID.Value = CURRENT_SCRIPTS_ID
+	CLONE_SCRIPTS.NAME.Text = v.Name
+	CLONE_SCRIPTS.SHOW_ID.Text = 'ID : ' .. CURRENT_SCRIPTS_ID
+	CLONE_SCRIPTS.Position = CLONE_SCRIPTS.Position + UDim2.new(0, CURRENT_SCRIPTS_POS, 0, 0)
+	CLONE_SCRIPTS.Visible = true
+	
+	CLONE_SCRIPTS.RUN.MouseButton1Down:connect(function()
+		if v:IsA('LocalScript') then
+			local CLONE_SCRIPT = v:Clone()
+			CLONE_SCRIPT.Disabled = true
+			CLONE_SCRIPT.Parent = PLAYER.PlayerGui
+			wait()
+			CLONE_SCRIPT.Disabled = false
+		end
+	end)
+end
+
+MOVE_LEFT.MouseButton1Down:connect(function()
+	if CURRENT_ID == 1 then
+		if SCRIPTS_MOVE:FindFirstChild(TOTAL_ID) then
+			if SEARCH_POS:FindFirstChild(TOTAL_ID) then
+				SCRIPTS_MOVE:TweenPosition(UDim2.new(0, SEARCH_POS[TOTAL_ID].Value, 0, 0), 'Out', 'Quad', 0.2)
+			end
+		end
+		CURRENT_ID = TOTAL_ID
+	else
+		CURRENT_POS = CURRENT_POS + 130
+		SCRIPTS_MOVE:TweenPosition(UDim2.new(0, CURRENT_POS, 0, 0), 'Out', 'Quad', 0.2)
+		CURRENT_ID = CURRENT_ID - 1
+	end
+end)
+
+MOVE_RIGHT.MouseButton1Down:connect(function()
+	if CURRENT_ID == TOTAL_ID then
+		SCRIPTS_MOVE:TweenPosition(UDim2.new(0, SEARCH_POS['1'].Value ,0, 0), 'Out', 'Quad', 0.2)
+		CURRENT_ID = 1
+	else
+		CURRENT_POS = CURRENT_POS - 130
+		SCRIPTS_MOVE:TweenPosition(UDim2.new(0, CURRENT_POS, 0, 0), 'Out', 'Quad', 0.2)
+		CURRENT_ID = CURRENT_ID + 1
+	end
+end)
+
+SEARCH_ID.FocusLost:connect(function()
+	for i,v in pairs(SCRIPTS_MOVE:GetChildren()) do
+		if v.NAME.Text == SEARCH_ID.Text then
+			CURRENT_POS = SEARCH_POS[v.Name].Value
+			SCRIPTS_MOVE:TweenPosition(UDim2.new(0, SEARCH_POS[v.Name].Value, 0, 0), 'Out', 'Quad', 0.2)
+			CURRENT_ID = v.Name
+		end
+	end
+	
+	if SCRIPTS_MOVE:FindFirstChild(SEARCH_ID.Text) then
+		if SEARCH_POS:FindFirstChild(SEARCH_ID.Text) then
+			CURRENT_POS = SEARCH_POS[SEARCH_ID.Text].Value
+			SCRIPTS_MOVE:TweenPosition(UDim2.new(0, SEARCH_POS[SEARCH_ID.Text].Value, 0, 0), 'Out', 'Quad', 0.2)
+			CURRENT_ID = SEARCH_ID.Text
+		end
+	end
+end)
+
+
+
+--// MISC PAGE
+
+TABS_HAT   = PAGES_MISC.TABS.HAT
+TABS_GEAR  = PAGES_MISC.TABS.GEAR
+TABS_DONG  = PAGES_MISC.TABS.DONG
+TABS_FE    = PAGES_MISC.TABS.FE
+TABS_MEME  = PAGES_MISC.TABS.MEME
+
+PAGES_HAT   = PAGES_MISC.PAGES.HAT_GIVER
+PAGES_GEAR  = PAGES_MISC.PAGES.GEAR_GIVER
+PAGES_DONG  = PAGES_MISC.PAGES.DONG_EDIT
+PAGES_FE    = PAGES_MISC.PAGES.FE
+PAGES_MEME  = PAGES_MISC.PAGES.MEME_GIVER
+
+
+
+PAGES_DONG.CREATE.MouseButton1Down:connect(function()
+	for i,v in pairs(PLAYER.Character:GetChildren()) do
+		if v.Name == 'DONG' and v:IsA('Model') then
+			v:remove()
+		end
+	end
+	CREATE_DONG(PLAYER, PAGES_DONG.SHAFT_COLOR.COLOR.Value, PAGES_DONG.TIP_COLOR.COLOR.Value, PAGES_DONG.L_NUT_COLOR.COLOR.Value, PAGES_DONG.R_NUT_COLOR.COLOR.Value)
+end)
+
+PAGES_DONG.REMOVE.MouseButton1Down:connect(function()
+	for i,v in pairs(PLAYER.Character:GetChildren()) do
+		if v.Name == 'DONG' and v:IsA('Model') then
+			v:remove()
+		end
+	end
+end)
+
+for i,v in pairs(PAGES_DONG.TIP_COLORS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		PAGES_DONG.TIP_COLOR.BackgroundColor = BrickColor.new(v.COLOR.Value)
+		PAGES_DONG.TIP_COLOR.COLOR.Value = v.COLOR.Value
+	end)
+end
+
+for i,v in pairs(PAGES_DONG.SHAFT_COLORS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		PAGES_DONG.SHAFT_COLOR.BackgroundColor = BrickColor.new(v.COLOR.Value)
+		PAGES_DONG.SHAFT_COLOR.COLOR.Value = v.COLOR.Value
+	end)
+end
+
+for i,v in pairs(PAGES_DONG.L_NUT_COLORS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		PAGES_DONG.L_NUT_COLOR.BackgroundColor = BrickColor.new(v.COLOR.Value)
+		PAGES_DONG.L_NUT_COLOR.COLOR.Value = v.COLOR.Value
+	end)
+end
+
+for i,v in pairs(PAGES_DONG.R_NUT_COLORS:GetChildren()) do
+	v.MouseButton1Down:connect(function()
+		PAGES_DONG.R_NUT_COLOR.BackgroundColor = BrickColor.new(v.COLOR.Value)
+		PAGES_DONG.R_NUT_COLOR.COLOR.Value = v.COLOR.Value
+	end)
+end
+
+for i,v in pairs(PAGES_DONG:GetChildren()) do
+	if v:IsA('TextButton') then
+		v.MouseButton1Down:connect(function()
+			if v.Name == 'WHITE_DONG' then
+				for i,v in pairs(PAGES_DONG[v.Name]:GetChildren()) do
+					for a,b in pairs(PAGES_DONG:GetChildren()) do
+						if v.Name == b.Name then
+							b.BackgroundColor = BrickColor.new(v.Value)
+							b.COLOR.Value = v.Value
+						end
+					end
+				end
+				
+			elseif v.Name == 'BROWN_DONG' then
+				for i,v in pairs(PAGES_DONG[v.Name]:GetChildren()) do
+					for a,b in pairs(PAGES_DONG:GetChildren()) do
+						if v.Name == b.Name then
+							b.BackgroundColor = BrickColor.new(v.Value)
+							b.COLOR.Value = v.Value
+						end
+					end
+				end
+				
+			elseif v.Name == 'ASIAN_DONG' then
+				for i,v in pairs(PAGES_DONG[v.Name]:GetChildren()) do
+					for a,b in pairs(PAGES_DONG:GetChildren()) do
+						if v.Name == b.Name then
+							b.BackgroundColor = BrickColor.new(v.Value)
+							b.COLOR.Value = v.Value
+						end
+					end
+				end
+				
+			elseif v.Name == 'ALIEN_DONG' then
+				for i,v in pairs(PAGES_DONG[v.Name]:GetChildren()) do
+					for a,b in pairs(PAGES_DONG:GetChildren()) do
+						if v.Name == b.Name then
+							b.BackgroundColor = BrickColor.new(v.Value)
+							b.COLOR.Value = v.Value
+						end
+					end
+				end
+			end
+		end)
+	end
+end
+
+
+
+--// BAN DATA PAGE
+
+local BAN_POS = UDim2.new(0, 0, 0, -30)
+
+for i,v in pairs(BANNED_PLAYERS) do
+	local BANNED = PAGES_BAN.CLONE:Clone()
+	BANNED.Parent = PAGES_BAN.BAN_LIST
+	
+	PAGES_BAN.BAN_LIST.CanvasSize = PAGES_BAN.BAN_LIST.CanvasSize + UDim2.new(0, 0, 0, 30)
+	
+	BANNED.NAME.Value = v.NAME
+	BANNED.USER_ID.Value = v.UID
+	
+	BANNED.SHOW_NAME.Text = ' NAME : ' .. v.NAME
+	BANNED.SHOW_UID.Text = ' USER ID : ' .. v.UID
+	
+	BANNED.Position = BAN_POS + UDim2.new(0, 0, 0, 30)
+	BANNED.Visible = true
+	
+	BAN_POS = BAN_POS + UDim2.new(0, 0, 0, 30)
+	
+	BANNED.REMOVE.MouseButton1Down:connect(function()
+		for i,v in pairs(BANNED_PLAYERS) do
+			if BANNED_PLAYERS[i].NAME == BANNED.NAME.Value or BANNED_PLAYERS[i].UID == BANNED.USER_ID.Value then
+				table.remove(BANNED_PLAYERS, i)
+			end
+		end
+		BANNED:remove()
+		
+		PAGES_BAN.BAN_LIST.CanvasSize = PAGES_BAN.BAN_LIST.CanvasSize - UDim2.new(0, 0, 0, 30)
+		for i,v in pairs(PAGES_BAN.BAN_LIST:GetChildren()) do
+			v.Position = v.Position - UDim2.new(0, 0, 0, 30)
+		end
+	end)
+end
+
+PAGES_BAN.BAN_LIST.CanvasSize  = PAGES_BAN.BAN_LIST.CanvasSize + UDim2.new(0, 0, 0, 15)
+
+
+
+--// SETTINGS PAGE
+
+if FILTERING_ENABLED == false then
+	PAGES_SETTINGS.FE.Text = ' FilteringEnabled : false'
+else
+	PAGES_SETTINGS.FE.Text = ' FilteringEnabled : true'
+end
+
+PAGES_SETTINGS.PLACE_ID.Text    = ' Place ID : ' .. PLACE_ID
+PAGES_SETTINGS.CREATOR_ID.Text  = ' Creator ID : ' .. CREATOR_ID
+PAGES_SETTINGS.MAX_PLAYERS.Text      = ' Max Players : ' .. MAX_PLAYERS
+PAGES_SETTINGS.CURRENT_PLAYERS.Text  = ' Current Players : ' .. CURRENT_PLAYERS
+
+if OUTLINES == false then
+	PAGES_SETTINGS.OUTLINES.Text = ' Outlines : false'
+else
+	PAGES_SETTINGS.OUTLINES.Text = ' Outlines : true'
+end
+
+if GLOBAL_SHADOWS == false then
+	PAGES_SETTINGS.GLOBAL_SHADOWS.Text = ' GlobalShadows : false'
+else
+	PAGES_SETTINGS.GLOBAL_SHADOWS.Text = ' GlobalShadows : true'
+end
+
+if SERVER_LOCKED == false then
+	PAGES_SETTINGS.SERVER_LOCKED.Text = ' Server Locked : false'
+else
+	PAGES_SETTINGS.SERVER_LOCKED.Text = ' Server Locked : true'
+end
+
+if _G.COMMAND_BAR == false then
+	PAGES_SETTINGS.CMD_BAR.Text = ' Command Bar : false'
+else
+	PAGES_SETTINGS.CMD_BAR.Text = ' Command Bar : true'
+end
+
+if ANTI_EXPLOIT == false then
+	PAGES_SETTINGS.ANTI_EXPLOIT.Text = ' Anti-Exploit : false'
+else
+	PAGES_SETTINGS.ANTI_EXPLOIT.Text = ' Anti-Exploit : true'
+end
+
+PAGES_SETTINGS.OUTLINES.MouseButton1Down:connect(function()
+	if OUTLINES == false then
+		game.Lighting.Outlines = true
+		OUTLINES = true
+		PAGES_SETTINGS.OUTLINES.Text = ' Outlines : true'
+	else
+		game.Lighting.Outlines = false
+		OUTLINES = false
+		PAGES_SETTINGS.OUTLINES.Text = ' Outlines : false'
+	end
+end)
+
+PAGES_SETTINGS.GLOBAL_SHADOWS.MouseButton1Down:connect(function()
+	if GLOBAL_SHADOWS == false then
+		game.Lighting.GlobalShadows = true
+		GLOBAL_SHADOWS = true
+		PAGES_SETTINGS.GLOBAL_SHADOWS.Text = ' GlobalShadows : true'
+	else
+		game.Lighting.GlobalShadows = false
+		GLOBAL_SHADOWS = false
+		PAGES_SETTINGS.GLOBAL_SHADOWS.Text = ' GlobalShadows : false'
+	end
+end)
+
+PAGES_SETTINGS.SERVER_LOCKED.MouseButton1Down:connect(function()
+	if SERVER_LOCKED == false then
+		SERVER_LOCKED = true
+		PAGES_SETTINGS.SERVER_LOCKED.Text = ' Server Locked : true'
+	else
+		SERVER_LOCKED = false
+		PAGES_SETTINGS.SERVER_LOCKED.Text = ' Server Locked : false'
+	end
+end)
+
+PAGES_SETTINGS.CMD_BAR.MouseButton1Down:connect(function()
+	if _G.COMMAND_BAR == false then
+		_G.COMMAND_BAR = true
+		PAGES_SETTINGS.CMD_BAR.Text = ' Command Bar : true'
+	else
+		_G.COMMAND_BAR = false
+		PAGES_SETTINGS.CMD_BAR.Text = ' Command Bar : false'
+	end
+end)
+
+PAGES_SETTINGS.ANTI_EXPLOIT.MouseButton1Down:connect(function()
+	if ANTI_EXPLOIT == false then
+		ANTI_EXPLOIT = true
+		PAGES_SETTINGS.ANTI_EXPLOIT.Text = ' Anti-Exploit : true'
+	else
+		ANTI_EXPLOIT = false
+		PAGES_SETTINGS.ANTI_EXPLOIT.Text = ' Anti-Exploit : false'
+	end
+end)
+
+
+
+--// EXTRAS
+
+game.Players.PlayerAdded:connect(function(PLAYER_ADDED)
+	CURRENT_PLAYERS = game.Players.NumPlayers
+	wait()
+	PAGES_SETTINGS.CURRENT_PLAYERS.Text  = ' Current Players : ' .. CURRENT_PLAYERS
+	
+	if SERVER_LOCKED == true then
+		KICK(PLAYER_ADDED)
+	end
+end)
+
+game.Players.PlayerRemoving:connect(function(PLAYER_REMOVED)
+	CURRENT_PLAYERS = game.Players.NumPlayers
+	wait()
+	PAGES_SETTINGS.CURRENT_PLAYERS.Text  = ' Current Players : ' .. CURRENT_PLAYERS
+end)
+
+game.CoreGui.ChildAdded:connect(function(ADDED)
+	if ADDED.Name == 'Banned' and ADDED:IsA('Folder') then
+		ADDED:remove()
+	end
+end)
+
+for i,v in pairs(game.CoreGui:GetChildren()) do
+	if v.Name == 'Banned' and v:IsA('Folder') then
+		v:remove()
+	end
+end
+
+wait()
+
+OPEN:TweenPosition(UDim2.new(0, 0, 1, -50), 'Out', 'Quad', 0.5)

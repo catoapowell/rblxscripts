@@ -1,0 +1,1253 @@
+
+Player=game.Players.LocalPlayer
+Character=Player.Character
+Character.Humanoid.Name = "noneofurbusiness"
+hum = Character.noneofurbusiness
+LeftArm=Character["Left Arm"]
+LeftLeg=Character["Left Leg"]
+RightArm=Character["Right Arm"]
+RightLeg=Character["Right Leg"]
+Root=Character["HumanoidRootPart"]
+Head=Character["Head"]
+Torso=Character["Torso"]
+Neck=Torso["Neck"]
+mouse = Player:GetMouse()
+walking = false
+hitdebounce = false
+debounce = false
+jumping = false
+attacking = false
+firsttime = false
+tauntdebounce = false
+position = nil
+MseGuide = true
+running = false
+settime = 0
+sine = 0
+t = 0
+throwballv = false
+ws = 18
+change = 1
+wtr1 = false
+combo1 = true
+equip = false
+dgs = 75
+combo2 = false
+switch1 = true
+switch2 = false
+firsttime2 = false
+combo3 = false
+gunallowance = false
+orbitalcannon = false
+shooting = false
+RunSrv = game:GetService("RunService")
+RenderStepped = game:GetService("RunService").RenderStepped
+removeuseless = game:GetService("Debris")
+
+screenGui = Instance.new("ScreenGui")
+screenGui.Parent = script.Parent
+
+local HEADLERP = Instance.new("ManualWeld")
+HEADLERP.Parent = Head
+HEADLERP.Part0 = Head
+HEADLERP.Part1 = Head
+HEADLERP.C0 = CFrame.new(0, -1.5, -0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local TORSOLERP = Instance.new("ManualWeld")
+TORSOLERP.Parent = Root
+TORSOLERP.Part0 = Torso
+TORSOLERP.C0 = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local ROOTLERP = Instance.new("ManualWeld")
+ROOTLERP.Parent = Root
+ROOTLERP.Part0 = Root
+ROOTLERP.Part1 = Torso
+ROOTLERP.C0 = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local RIGHTARMLERP = Instance.new("ManualWeld")
+RIGHTARMLERP.Parent = RightArm
+RIGHTARMLERP.Part0 = RightArm
+RIGHTARMLERP.Part1 = Torso
+RIGHTARMLERP.C0 = CFrame.new(-1.5, 0, -0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local LEFTARMLERP = Instance.new("ManualWeld")
+LEFTARMLERP.Parent = LeftArm
+LEFTARMLERP.Part0 = LeftArm
+LEFTARMLERP.Part1 = Torso
+LEFTARMLERP.C0 = CFrame.new(1.5, 0, -0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local RIGHTLEGLERP = Instance.new("ManualWeld")
+RIGHTLEGLERP.Parent = RightLeg
+RIGHTLEGLERP.Part0 = RightLeg
+RIGHTLEGLERP.Part1 = Torso
+RIGHTLEGLERP.C0 = CFrame.new(-0.5, 2, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local LEFTLEGLERP = Instance.new("ManualWeld")
+LEFTLEGLERP.Parent = LeftLeg
+LEFTLEGLERP.Part0 = LeftLeg
+LEFTLEGLERP.Part1 = Torso
+LEFTLEGLERP.C0 = CFrame.new(0.5, 2, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+
+local function weldBetween(a, b)
+    local weld = Instance.new("ManualWeld", a)
+    weld.Part0 = a
+    weld.Part1 = b
+    weld.C0 = a.CFrame:inverse() * b.CFrame
+    return weld
+end
+
+leftlocation = Instance.new("Part",LeftArm)
+leftlocation.Size = Vector3.new(1,1,1)
+leftlocation.Transparency = 1
+leftlocationweld = weldBetween(leftlocation,LeftArm)
+leftlocation.Name = "leftloc"
+leftlocationweld.C0 = CFrame.new(0,1.2,0)
+
+function MAKETRAIL(PARENT,POSITION1,POSITION2,LIFETIME,COLOR)
+A = Instance.new("Attachment", PARENT)
+A.Position = POSITION1
+A.Name = "A"
+B = Instance.new("Attachment", PARENT)
+B.Position = POSITION2
+B.Name = "B"
+tr1 = Instance.new("Trail", PARENT)
+tr1.Attachment0 = A
+tr1.Attachment1 = B
+tr1.Enabled = true
+tr1.Lifetime = LIFETIME
+tr1.TextureMode = "Static"
+tr1.LightInfluence = 0
+tr1.Color = COLOR
+tr1.Transparency = NumberSequence.new(0, 1)
+end
+
+shirt = Instance.new("Shirt", Character)
+shirt.Name = "Shirt"
+pants = Instance.new("Pants", Character)
+pants.Name = "Pants"
+Character.Shirt.ShirtTemplate = "http://www.roblox.com/asset/?id=1591925990"
+Character.Pants.PantsTemplate = "http://www.roblox.com/asset/?id=1819336634"
+
+skull = Instance.new("Part",Character)
+skull.Size = Vector3.new(2,2,2)
+skull.CFrame = Head.CFrame
+skull.CanCollide = false
+skullweld = Instance.new("Weld",skull)
+skullweld.Part0 = skull
+skullweld.Part1 = Head
+skullweld.C0 = skull.CFrame:inverse() * Head.CFrame * CFrame.new(0,-.39,0)
+mskull = Instance.new("SpecialMesh", skull)
+mskull.MeshType = "FileMesh"
+mskull.Scale = Vector3.new(1.25, 1.25, 1.25)
+mskull.VertexColor = Vector3.new(0,0,25)
+mskull.MeshId,mskull.TextureId = 'http://www.roblox.com/asset/?id=116524125','http://www.roblox.com/asset/?id=116524213'
+
+johndoe = Instance.new("Part",Head)
+johndoe.Shape = "Ball"
+johndoe.Material = "Neon"
+johndoe.BrickColor = BrickColor.new("Cyan")
+johndoe.Size = Vector3.new(1.68,1.68,1.68)
+johndoeweld = weldBetween(johndoe,Head)
+johndoeweld.C0 = CFrame.new(0,-.15,.1)
+
+seacutlass = Instance.new("Part",Character)
+seacutlass.Size = Vector3.new(2,2,2)
+seacutlass.CFrame = RightArm.CFrame
+seacutlass.CanCollide = false
+seacutlassweld = Instance.new("Weld",seacutlass)
+seacutlassweld.Part0 = seacutlass
+seacutlassweld.Part1 = RightArm
+seacutlassweld.C0 = seacutlass.CFrame:inverse() * RightArm.CFrame * CFrame.new(-.7,-2.1,0) * CFrame.Angles(math.rad(230),math.rad(0),math.rad(45)) 
+mseacutlass = Instance.new("SpecialMesh", seacutlass)
+mseacutlass.MeshType = "FileMesh"
+mseacutlass.Scale = Vector3.new(1, 1, 1)
+mseacutlass.MeshId,mseacutlass.TextureId = 'http://www.roblox.com/asset/?id=155403991','http://www.roblox.com/asset/?id=155403949'
+
+hitbox = Instance.new("Part",seacutlass)
+hitbox.Size = Vector3.new(1,4,1)
+hitbox.CanCollide = false
+hitbox.Transparency = 1
+hitboxweld = weldBetween(hitbox,seacutlass)
+hitboxweld.C0 = CFrame.new(0,-1,.25) * CFrame.Angles(math.rad(40),0,0)
+
+swordslash1 = Instance.new("Sound",seacutlass)
+swordslash1.SoundId = "rbxassetid://553461718"
+swordslash1.Volume = 4
+swordslash1.Name = "swordslash1"
+swordslash1.Pitch = 1
+
+swordslash2 = Instance.new("Sound",seacutlass)
+swordslash2.SoundId = "rbxassetid://553461718"
+swordslash2.Volume = 4
+swordslash2.Name = "swordslash2"
+swordslash2.Pitch = .85
+
+swordslash3 = Instance.new("Sound",seacutlass)
+swordslash3.SoundId = "rbxassetid://553461718"
+swordslash3.Volume = 4
+swordslash3.Name = "swordslash3"
+swordslash3.Pitch = 1.15
+
+seacutlass.ChildRemoved:connect(function(removed)
+if removed.Name == "swordslash1" then
+swordslash1 = Instance.new("Sound",seacutlass)
+swordslash1.SoundId = "rbxassetid://553461718"
+swordslash1.Name = "swordslash1"
+swordslash1.Volume = 4
+swordslash1.Pitch = 1
+elseif removed.Name == "swordslash2" then
+swordslash2 = Instance.new("Sound",seacutlass)
+swordslash2.SoundId = "rbxassetid://553461718"
+swordslash2.Volume = 4
+swordslash2.Name = "swordslash2"
+swordslash2.Pitch = .85
+elseif removed.Name == "swordslash3" then
+swordslash3 = Instance.new("Sound",seacutlass)
+swordslash3.SoundId = "rbxassetid://553461718"
+swordslash3.Volume = 4
+swordslash3.Name = "swordslash3"
+swordslash3.Pitch = 1.15
+end
+end)
+
+A = Instance.new("Attachment", seacutlass)
+A.Position = Vector3.new(0,2.25,0)
+A.Name = "A"
+B = Instance.new("Attachment", seacutlass)
+B.Position = Vector3.new(0,-.50,0)
+B.Name = "B"
+tr1 = Instance.new("Trail", seacutlass)
+tr1.Attachment0 = A
+tr1.Attachment1 = B
+tr1.Enabled = false
+tr1.Lifetime = 1
+tr1.TextureMode = "Static"
+tr1.LightInfluence = 0
+tr1.Color = ColorSequence.new(BrickColor.new("Cyan").Color,BrickColor.new("White"))
+tr1.Transparency = NumberSequence.new(0, 1)
+
+coroutine.wrap(function()
+while wait() do
+hum.WalkSpeed = ws
+LeftArm.BrickColor = BrickColor.new("Really black")
+RightArm.BrickColor = BrickColor.new("Really black")
+Head.BrickColor = BrickColor.new("Really black")
+end
+end)()
+godmode = coroutine.wrap(function()
+for i,v in pairs(Character:GetChildren()) do
+if v:IsA("BasePart") and v ~= Root then
+v.Anchored = false
+end
+end
+while true do
+hum.MaxHealth = math.huge
+wait(0.0000001)
+hum.Health = math.huge
+wait()
+end
+end)
+godmode()
+ff = Instance.new("ForceField", Character)
+ff.Visible = false
+
+coroutine.wrap(function()
+for i,v in pairs(Character:GetChildren()) do
+if v.Name == "Animate" then v:Remove()
+end
+end
+end)()
+
+function damagealll(Radius,Position)        
+    local Returning = {}        
+    for _,v in pairs(workspace:GetChildren()) do        
+        if v~=Character and v:FindFirstChildOfClass('Humanoid') and v:FindFirstChild('Torso') or v:FindFirstChild('UpperTorso') then
+if v:FindFirstChild("Torso") then       
+            local Mag = (v.Torso.Position - Position).magnitude     
+            if Mag < Radius then        
+                table.insert(Returning,v)       
+            end
+elseif v:FindFirstChild("UpperTorso") then  
+            local Mag = (v.UpperTorso.Position - Position).magnitude        
+            if Mag < Radius then        
+                table.insert(Returning,v)       
+            end
+end 
+        end     
+    end     
+    return Returning        
+end
+
+ArtificialHB = Instance.new("BindableEvent", script)
+ArtificialHB.Name = "Heartbeat"
+script:WaitForChild("Heartbeat")
+
+frame = 1 / 60
+tf = 0
+allowframeloss = false
+tossremainder = false
+
+
+lastframe = tick()
+script.Heartbeat:Fire()
+
+
+game:GetService("RunService").Heartbeat:connect(function(s, p)
+    tf = tf + s
+    if tf >= frame then
+        if allowframeloss then
+            script.Heartbeat:Fire()
+            lastframe = tick()
+        else
+            for i = 1, math.floor(tf / frame) do
+                script.Heartbeat:Fire()
+            end
+            lastframe = tick()
+        end
+        if tossremainder then
+            tf = 0
+        else
+            tf = tf - frame * math.floor(tf / frame)
+        end
+    end
+end)
+
+function swait(num)
+    if num == 0 or num == nil then
+        game:service("RunService").Stepped:wait(0)
+    else
+        for i = 0, num do
+            game:service("RunService").Stepped:wait(0)
+        end
+    end
+end
+
+doomtheme = Instance.new("Sound", Torso)
+doomtheme.Volume = 3
+doomtheme.Name = "doomtheme"
+doomtheme.Looped = true
+doomtheme.SoundId = "rbxassetid://2136330117"
+doomtheme:Play()
+
+Torso.ChildRemoved:connect(function(removed)
+if removed.Name == "doomtheme" then
+doomtheme = Instance.new("Sound", Torso)
+doomtheme.Volume = 1
+doomtheme.Name = "doomtheme"
+doomtheme.Looped = true
+doomtheme.SoundId = "rbxassetid://2136330117"
+doomtheme:Play()
+end
+end)
+
+for _,n in pairs(Character:GetChildren()) do
+if n:IsA("Accessory") then n:Remove() end
+end
+for _,x in pairs(Character:GetChildren()) do
+if x:IsA("Decal") then x:Remove() end
+end
+
+function SOUND(PARENT,ID,VOL,LOOP,REMOVE)
+so = Instance.new("Sound")
+so.Parent = PARENT
+so.SoundId = "rbxassetid://"..ID
+so.Volume = VOL
+so.Looped = LOOP
+so:Play()
+removeuseless:AddItem(so,REMOVE)
+end
+
+locpart = Instance.new("Part",Torso)
+locpart.Size = Vector3.new(1.1,1.1,1.1)
+locpart.Transparency = 1
+locpart.CanCollide = false
+locweld = weldBetween(locpart,Torso)
+
+circlepart = Instance.new("Part",Torso)
+circlepart.Size = Vector3.new(1,1,1)
+circlepart.Transparency = 1
+circlepart.CanCollide = false
+circlepart.Anchored = false
+circlepart.Name = "c1"
+circlepartweld = weldBetween(circlepart,locpart)
+
+circlepart2 = Instance.new("Part",Torso)
+circlepart2.Size = Vector3.new(1,1,1)
+circlepart2.Transparency = 1
+circlepart2.CanCollide = false
+circlepart2.Anchored = false
+circlepart2.Name = "c2"
+circlepart2weld = weldBetween(circlepart2,locpart)
+
+circlepart3 = Instance.new("Part",Torso)
+circlepart3.Size = Vector3.new(1,1,1)
+circlepart3.Transparency = 1
+circlepart3.CanCollide = false
+circlepart3.Anchored = false
+circlepart3.Name = "c3"
+circlepart3weld = weldBetween(circlepart3,locpart)
+
+circlepart4 = Instance.new("Part",Torso)
+circlepart4.Size = Vector3.new(1,1,1)
+circlepart4.Transparency = 1
+circlepart4.CanCollide = false
+circlepart4.Anchored = false
+circlepart4.Name = "c4"
+circlepart4weld = weldBetween(circlepart4,locpart)
+
+A = Instance.new("Attachment", circlepart3)
+A.Position = Vector3.new(0,.05,0)
+A.Name = "A"
+B = Instance.new("Attachment", circlepart3)
+B.Position = Vector3.new(0,-.05,0)
+B.Name = "B"
+trail = Instance.new("Trail", circlepart3)
+trail.Attachment0 = A
+trail.Attachment1 = B
+trail.Enabled = true
+trail.Lifetime = 2.5
+trail.TextureMode = "Static"
+trail.LightInfluence = 0
+trail.Color = ColorSequence.new(BrickColor.new("Cyan").Color,BrickColor.new("White"))
+trail.Transparency = NumberSequence.new(0, 1)
+
+A2 = Instance.new("Attachment", circlepart4)
+A2.Position = Vector3.new(0,.05,0)
+A.Name = "A"
+B2 = Instance.new("Attachment", circlepart4)
+B2.Position = Vector3.new(0,-.05,0)
+B.Name = "B"
+trail2 = Instance.new("Trail", circlepart4)
+trail2.Attachment0 = A2
+trail2.Attachment1 = B2
+trail2.Enabled = true
+trail2.Lifetime = 2.5
+trail2.TextureMode = "Static"
+trail2.LightInfluence = 0
+trail2.Color = ColorSequence.new(BrickColor.new("Cyan").Color,BrickColor.new("White"))
+trail2.Transparency = NumberSequence.new(0, 1)
+
+
+A = Instance.new("Attachment", circlepart)
+A.Position = Vector3.new(0,.05,0)
+A.Name = "A"
+B = Instance.new("Attachment", circlepart)
+B.Position = Vector3.new(0,-.05,0)
+B.Name = "B"
+trail3 = Instance.new("Trail", circlepart)
+trail3.Attachment0 = A
+trail3.Attachment1 = B
+trail3.Enabled = true
+trail3.Lifetime = 1
+trail3.TextureMode = "Static"
+trail3.LightInfluence = 0
+trail3.Color = ColorSequence.new(BrickColor.new("Cyan").Color,BrickColor.new("White"))
+trail3.Transparency = NumberSequence.new(0, 1)
+
+A2 = Instance.new("Attachment", circlepart2)
+A2.Position = Vector3.new(0,.05,0)
+A.Name = "A"
+B2 = Instance.new("Attachment", circlepart2)
+B2.Position = Vector3.new(0,-.05,0)
+B.Name = "B"
+trail4 = Instance.new("Trail", circlepart2)
+trail4.Attachment0 = A2
+trail4.Attachment1 = B2
+trail4.Enabled = true
+trail4.Lifetime = 1
+trail4.TextureMode = "Static"
+trail4.LightInfluence = 0
+trail4.Color = ColorSequence.new(BrickColor.new("Cyan").Color,BrickColor.new("White"))
+trail4.Transparency = NumberSequence.new(0, 1)
+
+x = 0
+g = 0
+range = 2.5
+range2 = 5
+
+coroutine.wrap(function()
+while true do
+x = x + 2
+g = g + 1
+swait()
+circlepartweld.C0 = CFrame.new(range,0,0) * CFrame.Angles(math.rad(0),math.rad(x),math.rad(0))
+circlepart2weld.C0 = CFrame.new(-range,0,0) * CFrame.Angles(math.rad(0),math.rad(x),math.rad(0))
+circlepart3weld.C0 = CFrame.new(-range2,0,0) * CFrame.Angles(math.rad(0),math.rad(g),math.rad(0))
+circlepart4weld.C0 = CFrame.new(range2,0,0) * CFrame.Angles(math.rad(0),math.rad(g),math.rad(0))
+end
+end)()
+
+wind = Instance.new("Part", Torso)
+wind.BrickColor = BrickColor.new("Cyan")
+wind.Size = Vector3.new(5,5,5)
+wind.CanCollide = false
+wind.Anchored = true
+wind.Name = "wind"
+wind.Transparency = .75
+wind.Material = "Neon"
+windmesh = Instance.new("SpecialMesh", wind)
+windmesh.Scale = Vector3.new(.5,.8,.5)
+windmesh.MeshId = "rbxassetid://168892432"
+n = 0
+
+
+coroutine.wrap(function()
+while true do
+swait()
+n = n + 3
+wind.CFrame = Root.CFrame * CFrame.new(0,-1,-1.5) * CFrame.Angles(math.rad(0),math.rad(n),0)
+end
+end)()
+coroutine.wrap(function()
+while true do
+swait()
+if spin then
+trail.Enabled = true
+trail2.Enabled = true
+trail3.Enabled = true
+trail4.Enabled = true
+while wind.Transparency > .75 do
+if not spin then break end
+swait()
+wind.Transparency = wind.Transparency - .025
+end
+elseif not spin then
+trail.Enabled = false
+trail2.Enabled = false
+trail3.Enabled = false
+trail4.Enabled = false
+while wind.Transparency < 1 do
+if spin then break end
+swait()
+wind.Transparency = wind.Transparency + .025
+end
+end
+end
+end)()
+
+checks1 = coroutine.wrap(function() -------Checks
+while true do
+if Root.Velocity.y > 1 then
+position = "Jump"
+elseif Root.Velocity.y < -1 then
+position = "Falling"
+elseif Root.Velocity.Magnitude < 2 then
+position = "Idle"
+elseif Root.Velocity.Magnitude < 20 then
+position = "Walking"
+elseif Root.Velocity.Magnitude > 20 then
+position = "Running"
+else
+end
+wait()
+end
+end)
+checks1()
+
+mouse.Button1Down:connect(function()
+if debounce then return end
+debounce = true
+attacking = true
+spin = false
+if combo1 then
+combo1 = false
+combo3 = false
+combo2 = true
+ws = 12
+g1 = Instance.new("BodyGyro", Root)
+g1.D = 175
+g1.P = 20000
+g1.MaxTorque = Vector3.new(0,9000,0)
+g1.CFrame = CFrame.new(Root.Position,mouse.Hit.p)
+for i = 1, 12 do
+g1.CFrame = g1.CFrame:lerp(CFrame.new(Root.Position,mouse.Hit.p),.1)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(0), math.rad(70), math.rad(0)), 0.3)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1.5,1.5) * CFrame.Angles(math.rad(0),math.rad(-90),math.rad(240)),.3) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,0,.5) * CFrame.Angles(math.rad(-90),math.rad(-40),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.55,0) * CFrame.Angles(math.rad(20),math.rad(5),math.rad(20)),.3)
+swait()
+end
+hitdebounce = false
+swordslash1:Play()
+tr1.Enabled = true
+hitbox.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") then
+slachtoffer = hit.Parent:FindFirstChildOfClass("Humanoid")
+if slachtoffer.Parent.Name ~= Player.Name then
+if hitdebounce then return end
+hitdebounce = true
+slachtoffer:TakeDamage(math.random(17,26))
+end
+end
+end)
+for i = 1, 12 do
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(0), math.rad(-50), math.rad(0)), 0.3)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-2.2,1.4) * CFrame.Angles(math.rad(0),math.rad(-90),math.rad(200)),.15) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,1.35,.5) * CFrame.Angles(math.rad(-90),math.rad(40),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.55,0) * CFrame.Angles(math.rad(-20),math.rad(5),math.rad(20)),.3)
+swait()
+end
+removeuseless:AddItem(g1,.01)
+tr1.Enabled = false
+attacking = false
+hitdebounce = true
+debounce = false
+spin = true
+ws = 18
+elseif combo2 then
+combo3 = true
+combo2 = false
+combo1 = false
+ws = 12
+g1 = Instance.new("BodyGyro", Root)
+g1.D = 175
+g1.P = 20000
+g1.MaxTorque = Vector3.new(0,9000,0)
+g1.CFrame = CFrame.new(Root.Position,mouse.Hit.p)
+for i = 1, 12 do
+g1.CFrame = g1.CFrame:lerp(CFrame.new(Root.Position,mouse.Hit.p),.1)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(0), math.rad(-70), math.rad(0)), 0.3)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1.8,2) * CFrame.Angles(math.rad(0),math.rad(-90),math.rad(-130)),.3) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,0,.5) * CFrame.Angles(math.rad(-90),math.rad(-40),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.55,0) * CFrame.Angles(math.rad(20),math.rad(5),math.rad(20)),.3)
+swait()
+end
+hitdebounce = false
+tr1.Enabled = true
+swordslash2:Play()
+hitbox.Touched:connect(function(hit)
+if hit.Parent:FindFirstChildOfClass("Humanoid") then
+slachtoffer = hit.Parent:FindFirstChildOfClass("Humanoid")
+if slachtoffer.Parent.Name ~= Player.Name then
+if hitdebounce then return end
+hitdebounce = true
+slachtoffer:TakeDamage(math.random(31,42))
+end
+end
+end)
+ws = 7
+for i = 1, 12 do
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.3, 2, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(-10)), 0.1)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.3, 2.0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(10)), 0.1)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(0), math.rad(70), math.rad(0)), 0.3)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1.8,2) * CFrame.Angles(math.rad(0),math.rad(-90),math.rad(-130)),.3) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-.25,1.75,.5) * CFrame.Angles(math.rad(-90),math.rad(70),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.4,-.2) * CFrame.Angles(math.rad(20),math.rad(7),math.rad(12)),.3)
+swait()
+end
+removeuseless:AddItem(g1,.01)
+ws = 18
+tr1.Enabled = false
+attacking = false
+hitdebounce = true
+debounce = false
+spin = true
+elseif combo3 then
+combo1 = true
+combo2 = false
+combo3 = false
+z = 0
+ws = 4
+tr1.Enabled = true
+for i = 1, 10 do
+swait()
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.45, 1.55, .15) * CFrame.Angles(math.rad(0), math.rad(2), math.rad(-2)), .3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.45, 1.8, .2) * CFrame.Angles(math.rad(20), math.rad(0), math.rad(2)), .3)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1,1.5) * CFrame.Angles(math.rad(-310),math.rad(0),math.rad(0)),.8) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-.25,1.75,.5) * CFrame.Angles(math.rad(-90),math.rad(70),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.4,-.2) * CFrame.Angles(math.rad(20),math.rad(7),math.rad(12)),.3)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.5, 0) * CFrame.Angles(math.rad(0), math.rad(70), math.rad(0)), 0.3)
+end
+hitdebounce = false
+hitbox.Touched:connect(function(hit2)
+if hit2.Parent:FindFirstChildOfClass("Humanoid") then
+slachtoffer = hit2.Parent:FindFirstChildOfClass("Humanoid")
+if slachtoffer.Parent.Name ~= Player.Name then
+if hitdebounce then return end
+slachtoffer:TakeDamage(math.random(1,5))
+end
+end
+end)
+coroutine.wrap(function()
+for i = 1, 9 do
+swordslash3:Play()
+swait(5)
+end
+end)()
+for i = 1, 50 do
+z = z + 50
+swait()
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-0,1) * CFrame.Angles(math.rad(z),math.rad(0),math.rad(0)),.8) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-.25,1.75,.5) * CFrame.Angles(math.rad(-90),math.rad(70),math.rad(0)), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.4,-.2) * CFrame.Angles(math.rad(20),math.rad(7),math.rad(12)),.3)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.5, 0) * CFrame.Angles(math.rad(0), math.rad(70), math.rad(0)), 0.3)
+end
+hitdebounce = true
+ws = 18
+attacking = false
+debounce = false
+tr1.Enabled = false
+spin = true
+end
+end)
+
+mouse.KeyDown:connect(function(Press)
+Press=Press:lower()
+if Press=='r' then
+if orbitalcannon then return end
+if debounce then return end
+orbitalcannon = true
+debounce = true
+uhoh = true
+attacking = true
+ws = 0
+coroutine.wrap(function()
+for i = 1, 15 do
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(-.5,2,0) * CFrame.Angles(math.rad(0),math.rad(-20),math.rad(140)),.3)
+swait()
+end
+end)()
+powerball = Instance.new("Part",Torso)
+powerball.Anchored = true
+powerball.CanCollide = false
+powerball.Size = Vector3.new(1,1,1)
+powerball.Transparency = 1
+powerball.Material = "Neon"
+powerball.BrickColor = BrickColor.new("Cyan")
+powerball.CFrame = leftlocation.CFrame * CFrame.new(-40,0,0)
+powerball.Shape = "Ball"
+gz = Instance.new("Sound", powerball)
+gz.SoundId = "rbxassetid://907530407"
+gz.Looped = true
+gz.Volume = 0
+gz:Play()
+for i = 1, 300 do
+gz.Volume = gz.Volume + .25
+powerball.CFrame = leftlocation.CFrame * CFrame.new(0,-40,0)
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(-.7,-2.1,0) * CFrame.Angles(math.rad(230),math.rad(0),math.rad(45)),.8) 
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2 + -.1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,0,.5) * CFrame.Angles(math.rad(-90 - 3 * math.sin(sine/12)),math.rad(-40),math.rad(0)), 0.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.3, 2 - .1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(-10)), 0.1)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.1)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.3, 2.0 - .1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(10)), 0.1)
+powerball.Size = powerball.Size + Vector3.new(.25,.25,.25)
+powerball.Transparency = powerball.Transparency - .025
+swait()
+end
+gz:Remove()
+g1 = Instance.new("BodyGyro", Root)
+g1.D = 175
+g1.P = 20000
+g1.MaxTorque = Vector3.new(0,9000,0)
+LightOfDeath = Instance.new("Part", Torso)
+LightOfDeath.Size = Vector3.new(0.5, 0.5, 0.5)
+LightOfDeath.Material = "Neon"
+LightOfDeath.BrickColor = BrickColor.new("Cyan")
+LightOfDeath.Transparency = 1
+LightOfDeath.Anchored = true
+LightOfDeath.CanCollide = false
+LightOfDeathMESH = Instance.new("SpecialMesh", LightOfDeath)
+LightOfDeathMESH.MeshType = "Cylinder"
+LightOfDeathMESH.Scale = Vector3.new(1000,3,3)
+LightOfDeath.CFrame = CFrame.new(mouse.Hit.p) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(90))
+coroutine.wrap(function()
+wait(9)
+uhoh = false
+end)()
+soundofdoom = Instance.new("Sound", powerball)
+soundofdoom.SoundId = "rbxassetid://1545630949"
+soundofdoom.Volume = 10
+soundofdoom:Play()
+ws = 0
+while uhoh do
+if mouse.Target ~= nil then
+LightOfDeath.CFrame = LightOfDeath.CFrame:lerp(CFrame.new(mouse.Hit.p) * CFrame.Angles(0,0,math.rad(90)),.1)
+powerball.CFrame = powerball.CFrame:lerp(CFrame.new(mouse.Hit.p) * CFrame.new(0,250,0),.1)
+end
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), 0.3)
+g1.CFrame = g1.CFrame:lerp(CFrame.new(Root.Position,mouse.Hit.p),.2)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1, 1.35, 0.4) * CFrame.Angles(math.rad(-90 - 2 * math.sin(sine/12)), math.rad(3), math.rad(4)), 0.3)
+LightOfDeath.Transparency = LightOfDeath.Transparency - .05
+swait()
+end
+coroutine.wrap(function()
+coroutine.wrap(function()
+for i = 1, 400 do
+Hit = damagealll(200,LightOfDeath.Position)
+for _,v in pairs(Hit) do
+v:FindFirstChildOfClass("Humanoid").Parent:BreakJoints()
+vel = Instance.new("BodyVelocity",v:FindFirstChild("Torso") or v:FindFirstChild("UpperTorso")) 
+vel.maxForce = Vector3.new(9999999999999,9999999999999,9999999999999)
+torso = v:FindFirstChild("Torso") or v:FindFirstChild("UpperTorso")
+vel.velocity = CFrame.new(LightOfDeath.Position,torso.Position).lookVector*875
+removeuseless:AddItem(vel,.1)
+end
+explosionc = Instance.new("Part",Torso)
+explosionc.Anchored = true
+explosionc.CanCollide = false
+explosionc.Size = Vector3.new(1,1,1)
+explosionc.BrickColor = BrickColor.new("Cyan")
+explosionc.Material = "Neon"
+explosionc.CFrame = CFrame.new(LightOfDeath.Position)
+explosionc.Shape = "Ball"
+explosionc.Name = "explob"
+removeuseless:AddItem(explosionc,2)
+swait(.1)
+end
+end)()
+powerball.Transparency = 0
+LightOfDeath.Transparency = 0
+for i =  1, 400 do
+powerball.Transparency = powerball.Transparency + .05
+LightOfDeath.Transparency = LightOfDeath.Transparency + .05
+sk = Instance.new("Part",Torso)
+sk.CanCollide = false
+sk.Anchored = true
+sk.BrickColor = BrickColor.new("Cyan")
+sk.Name = "sk"
+sk.CFrame = LightOfDeath.CFrame * CFrame.Angles(math.rad(math.random(-180,180)),0,math.rad(math.random(-180,180)))
+skmesh = Instance.new("SpecialMesh",sk)
+skmesh.MeshId = "rbxassetid://662586858"
+skmesh.Name = "waterwave"
+skmesh.Scale = Vector3.new(.04,.01,.04)
+removeuseless:AddItem(sk,2)
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "waterwave" then
+v.Scale = v.Scale + Vector3.new(.2,0,.2)
+v.Parent.Transparency = v.Parent.Transparency + .05
+end
+end
+for i,v in pairs(Torso:GetChildren()) do
+if v.Name == "explob" then
+v.Size = v.Size + Vector3.new(20,20,20)
+v.Transparency = v.Transparency + .05
+end
+end
+swait()
+end
+for i = 1, 50 do
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "waterwave" then
+v.Scale = v.Scale + Vector3.new(.2,0,.2)
+v.Parent.Transparency = v.Parent.Transparency + .05
+end
+end
+for i,v in pairs(Torso:GetChildren()) do
+if v.Name == "explob" then
+v.Size = v.Size + Vector3.new(20,20,20)
+v.Transparency = v.Transparency + .05
+end
+end
+swait()
+end
+powerball:Remove()
+LightOfDeath:Remove()
+orbitalcannon = false
+end)()
+for i = 1, 35 do
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1, .8, 0.4) * CFrame.Angles(math.rad(-60 - 2 * math.sin(sine/12)), math.rad(3), math.rad(4)), 0.3)
+swait()
+end
+removeuseless:AddItem(g1,.001)
+ws = 18
+attacking = false
+debounce = false
+end
+end)
+
+mouse.KeyDown:connect(function(Press)
+Press=Press:lower()
+if Press=='e' then
+if debounce then return end
+debounce = true
+attacking = true
+ws = 2
+g1 = Instance.new("BodyGyro", Root)
+g1.D = 175
+g1.P = 20000
+g1.MaxTorque = Vector3.new(0,9000,0)
+SOUND(leftlocation,214876666,8,false,6)
+coroutine.wrap(function()
+for i = 1, 49 do
+waterballs = Instance.new("Part",Torso)
+waterballs.Anchored = true
+waterballs.CanCollide = false
+waterballs.Shape = "Ball"
+waterballs.BrickColor = BrickColor.new("Cyan")
+waterballs.Material = "Neon"
+waterballs.Transparency = .6
+waterballs.CFrame = leftlocation.CFrame
+waterballs.Size = Vector3.new(10,10,10)
+waterballs.Name = "wter"
+removeuseless:AddItem(waterballs,2)
+sk = Instance.new("Part",Torso)
+sk.CanCollide = false
+sk.Anchored = true
+sk.BrickColor = BrickColor.new("Cyan")
+sk.Name = "sk"
+sk.CFrame = leftlocation.CFrame * CFrame.Angles(math.rad(math.random(-180,180)),0,math.rad(math.random(-180,180)))
+skmesh = Instance.new("SpecialMesh",sk)
+skmesh.MeshId = "rbxassetid://662586858"
+skmesh.Name = "waterwave"
+skmesh.Scale = Vector3.new(.04,.01,.04)
+removeuseless:AddItem(sk,2)
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "waterwave" then
+v.Scale = v.Scale + Vector3.new(.02,0,.02)
+v.Parent.Transparency = v.Parent.Transparency + .05
+end
+end
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "wter" then
+v.Size = v.Size - Vector3.new(1,1,1)
+v.Transparency = v.Transparency + .05
+end
+end
+swait()
+end
+for i = 1, 40 do
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "wter" then
+v.Size = v.Size - Vector3.new(1,1,1)
+v.Transparency = v.Transparency + .05
+end
+end
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "waterwave" then
+v.Scale = v.Scale + Vector3.new(.02,0,.01)
+v.Parent.Transparency = v.Parent.Transparency + .05
+end
+end
+swait()
+end
+end)()
+for i = 1, 50 do
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1,1.5) * CFrame.Angles(math.rad(-315),math.rad(0),math.rad(0)),.8) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.5,.55,0) * CFrame.Angles(math.rad(-20),math.rad(-5),math.rad(-20)),.3)
+g1.CFrame = g1.CFrame:lerp(CFrame.new(Root.Position,mouse.Hit.p),.2)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0,-.2,0) * CFrame.Angles(math.rad(10),math.rad(15),math.rad(0)),.5)
+LEFTARMLERP.C1 = CFrame.new(0,0,0) * CFrame.Angles(0,0,0)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(0.5, 2, 0) * CFrame.Angles(math.rad(-14), math.rad(-20), math.rad(90)), 0.3)
+swait()
+end
+ws = 0
+coroutine.wrap(function()
+local throwball = Instance.new("Part",Torso)
+throwball.Anchored = false
+throwball.CanCollide = false
+throwball.Size = Vector3.new(1,1,1)
+throwball.Material = "Neon"
+throwball.Shape = "Ball"
+throwball.CFrame = leftlocation.CFrame
+throwball.BrickColor = BrickColor.new("Cyan")
+throwball.Name = "throwball"
+removeuseless:AddItem(throwball,4)
+throwball.Touched:connect(function(hit)
+if hit.Name ~= "watblock" and hit.Name ~= "sk" and hit.Name ~= "wter" and hit.Name ~= "leftloc" and hit.Name ~= "c1" and hit.Name ~= "c2" and hit.Name ~= "c3" and hit.Name ~= "c4" and hit.Parent ~= "Torso" and hit.Parent ~= "LeftArm" and hit.Parent ~= "RightArm" and hit.Parent ~= "Head" and hit.Name ~= "wind" then
+if throwballv then return end
+throwballv = true
+explo = Instance.new("Sound",throwball)
+explo.SoundId = "rbxassetid://821439273"
+explo.Volume = 8
+explo.Pitch = 1.3
+explo:Play()
+hit.Transparency = 0
+throwball.Anchored = true
+for i = 1, 15 do
+sk = Instance.new("Part",Torso)
+sk.CanCollide = false
+sk.Anchored = true
+sk.BrickColor = BrickColor.new("Cyan")
+sk.Name = "sk"
+sk.CFrame = throwball.CFrame * CFrame.Angles(math.rad(math.random(-180,180)),0,math.rad(math.random(-180,180)))
+skmesh = Instance.new("SpecialMesh",sk)
+skmesh.MeshId = "rbxassetid://662586858"
+skmesh.Name = "waterwave2"
+skmesh.Scale = Vector3.new(.04,.01,.04)
+removeuseless:AddItem(sk,2)
+end
+Hit = damagealll(25,throwball.Position)
+for _,v in pairs(Hit) do
+v:FindFirstChildOfClass("Humanoid"):TakeDamage(math.random(39,52))
+vel = Instance.new("BodyVelocity",v:FindFirstChild("Torso") or v:FindFirstChild("UpperTorso")) 
+vel.maxForce = Vector3.new(9999999999999,9999999999999,9999999999999)
+torso = v:FindFirstChild("Torso") or v:FindFirstChild("UpperTorso")
+vel.velocity = CFrame.new(throwball.Position,torso.Position).lookVector*125
+removeuseless:AddItem(vel,.1)
+end
+explosion = Instance.new("Part",Torso)
+explosion.Anchored = true
+explosion.CanCollide = false
+explosion.Shape = "Ball"
+explosion.BrickColor = BrickColor.new("Cyan")
+explosion.Material = "Neon"
+explosion.CFrame = throwball.CFrame
+explosion2 = Instance.new("Part",Torso)
+explosion2.Anchored = true
+explosion2.CanCollide = false
+explosion2.Shape = "Ball"
+explosion2.BrickColor = BrickColor.new("Cyan")
+explosion2.Material = "Neon"
+explosion2.CFrame = throwball.CFrame
+for i = 1, 30 do
+explo.Volume = explo.Volume - .5
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "waterwave2" then
+v.Scale = v.Scale + Vector3.new(.02,0,.02)
+v.Parent.Transparency = v.Parent.Transparency + .05
+end
+end
+explosion.Size = explosion.Size + Vector3.new(2,2,2)
+explosion.Transparency = explosion.Transparency + .05
+explosion2.Size = explosion2.Size + Vector3.new(1,1,1)
+explosion2.Transparency = explosion2.Transparency + .045
+swait()
+end
+explosion:Remove()
+explosion2:Remove()
+throwball:Remove()
+throwballv = false
+end
+end)
+local bov = Instance.new("BodyVelocity",throwball)
+bov.maxForce = Vector3.new(99999,99999,99999)
+throwball.CFrame = CFrame.new(throwball.Position,mouse.Hit.p)
+bov.velocity = throwball.CFrame.lookVector*215
+if wtr1 then return end
+wtr1 = true
+while true do
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "throwball" then
+watblock = Instance.new("Part",Torso)
+watblock.Size = Vector3.new(3,3,3)
+watblock.CanCollide = false
+watblock.BrickColor = BrickColor.new("Cyan")
+watblock.Anchored = false
+watblock.CFrame = v.CFrame * CFrame.Angles(math.rad(math.random(-180,180)),math.rad(math.random(-180,180)),math.rad(math.random(-180,180)))
+watblock.Material = "Neon"
+watblock.Name = "watblock"
+removeuseless:AddItem(watblock,2)
+end
+end
+for i,v in pairs(Torso:GetDescendants()) do if v.Name == "watblock" then
+v.Size = v.Size - Vector3.new(.25,.25,.25)
+v.Transparency = v.Transparency - .05
+end
+end
+swait()
+end
+end)()
+for i = 1, 12 do
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0,-.2,0) * CFrame.Angles(math.rad(-10),math.rad(-15),math.rad(0)),.5)
+LEFTARMLERP.C1 = CFrame.new(0,0,0)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.2,1,.5) * CFrame.Angles(math.rad(-90),math.rad(25),math.rad(0)), 0.5)
+swait()
+end
+removeuseless:AddItem(g1,.001)
+ws = 18
+attacking = false
+debounce = false
+end
+end)
+
+function ray(POSITION, DIRECTION, RANGE, IGNOREDECENDANTS)
+    return workspace:FindPartOnRay(Ray.new(POSITION, DIRECTION.unit * RANGE), IGNOREDECENDANTS)
+end
+
+function ray2(StartPos, EndPos, Distance, Ignore)
+local DIRECTION = CFrame.new(StartPos,EndPos).lookVector
+return ray(StartPos, DIRECTION, Distance, Ignore)
+end
+
+OrgnC0 = Neck.C0
+local movelimbs = coroutine.wrap(function()
+while RunSrv.RenderStepped:wait() do
+TrsoLV = Torso.CFrame.lookVector
+Dist = nil
+Diff = nil
+if not MseGuide then
+print("Failed to recognize")
+else
+local _, Point = Workspace:FindPartOnRay(Ray.new(Head.CFrame.p, mouse.Hit.lookVector), Workspace, false, true)
+Dist = (Head.CFrame.p-Point).magnitude
+Diff = Head.CFrame.Y-Point.Y
+local _, Point2 = Workspace:FindPartOnRay(Ray.new(LeftArm.CFrame.p, mouse.Hit.lookVector), Workspace, false, true)
+Dist2 = (LeftArm.CFrame.p-Point).magnitude
+Diff2 = LeftArm.CFrame.Y-Point.Y
+HEADLERP.C0 = CFrame.new(0, -1.5, -0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))
+Neck.C0 = Neck.C0:lerp(OrgnC0*CFrame.Angles((math.tan(Diff/Dist)*1), 0, (((Head.CFrame.p-Point).Unit):Cross(Torso.CFrame.lookVector)).Y*1), .1)
+end
+end
+end)
+movelimbs()
+immortal = {}
+for i,v in pairs(Character:GetDescendants()) do
+    if v:IsA("BasePart") and v.Name ~= "lmagic" and v.Name ~= "rmagic" then
+        if v ~= Root and v ~= Torso and v ~= Head and v ~= RightArm and v ~= LeftArm and v ~= RightLeg and v.Name ~= "lmagic" and v.Name ~= "rmagic" and v ~= LeftLeg then
+            v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+        end
+        table.insert(immortal,{v,v.Parent,v.Material,v.Color,v.Transparency})
+    elseif v:IsA("JointInstance") then
+        table.insert(immortal,{v,v.Parent,nil,nil,nil})
+    end
+end
+for e = 1, #immortal do
+    if immortal[e] ~= nil then
+        local STUFF = immortal[e]
+        local PART = STUFF[1]
+        local PARENT = STUFF[2]
+        local MATERIAL = STUFF[3]
+        local COLOR = STUFF[4]
+        local TRANSPARENCY = STUFF[5]
+if levitate then
+        if PART.ClassName == "Part" and PART ~= Root and PART.Name ~= eyo1 and PART.Name ~= eyo2 and PART.Name ~= "lmagic" and PART.Name ~= "rmagic" then
+            PART.Material = MATERIAL
+            PART.Color = COLOR
+            PART.Transparency = TRANSPARENCY
+        end
+        PART.AncestryChanged:connect(function()
+            PART.Parent = PARENT
+        end)
+else
+        if PART.ClassName == "Part" and PART ~= Root and PART.Name ~= "lmagic" and PART.Name ~= "rmagic" then
+            PART.Material = MATERIAL
+            PART.Color = COLOR
+            PART.Transparency = TRANSPARENCY
+        end
+        PART.AncestryChanged:connect(function()
+            PART.Parent = PARENT
+        end)
+end
+    end
+end
+function immortality()
+    for e = 1, #immortal do
+        if immortal[e] ~= nil then
+            local STUFF = immortal[e]
+            local PART = STUFF[1]
+            local PARENT = STUFF[2]
+            local MATERIAL = STUFF[3]
+            local COLOR = STUFF[4]
+            local TRANSPARENCY = STUFF[5]
+            if PART.ClassName == "Part" and PART == Root then
+                PART.Material = MATERIAL
+                PART.Color = COLOR
+                PART.Transparency = TRANSPARENCY
+            end
+            if PART.Parent ~= PARENT then
+                hum:Remove()
+                PART.Parent = PARENT
+                hum = Instance.new("Humanoid",Character)
+                                hum.Name = "noneofurbusiness"
+            end
+        end
+    end
+end
+coroutine.wrap(function()
+while true do
+if hum.Health < .1 then
+deadsound = Instance.new("Sound", Torso)
+deadsound.Volume = 6
+deadsound.SoundId = "rbxassetid://1411352723"
+deadsound:Play()
+immortality()
+end
+wait()
+end
+end)()
+
+local anims = coroutine.wrap(function()
+while true do
+settime = 0.05
+sine = sine + change
+if position == "Jump" and attacking == false then
+change = 1
+spin = false
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.4)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), 0.4)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.4,.1,-.2) * CFrame.Angles(math.rad(20),math.rad(-3),math.rad(-4)), 0.4)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.5, 2, 0) * CFrame.Angles(math.rad(10), math.rad(0), math.rad(0)), 0.4)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.5, 1.0, .9) * CFrame.Angles(math.rad(20), math.rad(0), math.rad(0)), 0.4)
+elseif position == "Jump2" and attacking == false then
+change = 1
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(-20 - 1 * math.sin(sine/9)), math.rad(0 + 0 * math.cos(sine/8)), math.rad(0) + Root.RotVelocity.Y / 30, math.cos(10 * math.cos(sine/10))), 0.3)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.3)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.3)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.5,.6,-.5) * CFrame.Angles(math.rad(32),math.rad(5 - .1 * math.sin(sine/12)),math.rad(40 - .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.6,-.5) * CFrame.Angles(math.rad(30),math.rad(-5 + .1 * math.sin(sine/12)),math.rad(-40 + .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(.2,1.2,-.3),.3)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.54, 1.4 + .1 * math.sin(sine/9), .4) * CFrame.Angles(math.rad(9 + 2 * math.cos(sine/9)), math.rad(0), math.rad(0)), 0.3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.54, 2.0 + .02 * math.sin(sine/9), 0.2 + .1 * math.sin(sine/9)) * CFrame.Angles(math.rad(25 + 5 * math.sin(sine/9)), math.rad(20), math.rad(0)), 0.3)
+elseif position == "Falling" and attacking == false then
+change = 1
+spin = false
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.4)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.5, 2, 0) * CFrame.Angles(math.rad(8), math.rad(4), math.rad(0)), 0.2)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.5, 1.0, .9) * CFrame.Angles(math.rad(14), math.rad(-4), math.rad(0)), 0.2)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.6, 0.5, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(20)), 0.2)
+elseif position == "Falling2" and attacking == false then
+change = 1
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(-20 - 1 * math.sin(sine/9)), math.rad(0 + 0 * math.cos(sine/8)), math.rad(0) + Root.RotVelocity.Y / 30, math.cos(10 * math.cos(sine/10))), 0.3)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.3)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.3)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.5,.6,-.5) * CFrame.Angles(math.rad(32),math.rad(5 - .1 * math.sin(sine/12)),math.rad(40 - .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.6,-.5) * CFrame.Angles(math.rad(30),math.rad(-5 + .1 * math.sin(sine/12)),math.rad(-40 + .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(.2,1.2,-.3),.3)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.54, 1.4 + .1 * math.sin(sine/9), .4) * CFrame.Angles(math.rad(9 + 2 * math.cos(sine/9)), math.rad(0), math.rad(0)), 0.3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.54, 2.0 + .02 * math.sin(sine/9), 0.2 + .1 * math.sin(sine/9)) * CFrame.Angles(math.rad(25 + 5 * math.sin(sine/9)), math.rad(20), math.rad(0)), 0.3)
+elseif position == "Walking" and attacking == false and running == false then
+change = 1.2
+walking = true
+spin = false
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(0,-1,1.5) * CFrame.Angles(math.rad(-315),math.rad(0),math.rad(0)),.8) 
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.5 + Root.RotVelocity.Y / 85,.35,-.5*math.sin(sine/8)) * CFrame.Angles(math.rad(35*math.sin(sine/8)),math.rad(0*math.sin(sine/8)),math.rad(-10 + Root.RotVelocity.Y / 10, math.sin(-20 * math.sin(sine/4)))),.3)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5 + Root.RotVelocity.Y / 85,.35,.5*math.sin(sine/8)) * CFrame.Angles(math.rad(-35*math.sin(sine/8)),math.rad(0*math.sin(sine/8)),math.rad(10 + Root.RotVelocity.Y / 10, math.sin(20 * math.sin(sine/4)))),.3)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, 0.05*math.sin(sine/4), 0) * CFrame.Angles(math.rad(-10), math.rad(5 * math.cos(sine/7)), math.rad(0) + Root.RotVelocity.Y / 30, math.cos(25 * math.cos(sine/10))), 0.1)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.5, 1.92 - 0.35 * math.cos(sine/8)/2.8, 0.2 - math.sin(sine/8)/3.4) * CFrame.Angles(math.rad(10) + -math.sin(sine/8)/2.3, math.rad(0)*math.cos(sine/1), math.rad(0), math.cos(25 * math.cos(sine/8))), 0.3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.5, 1.92 + 0.35 * math.cos(sine/8)/2.8, 0.2 + math.sin(sine/8)/3.4) * CFrame.Angles(math.rad(10) - -math.sin(sine/8)/2.3, math.rad(0)*math.cos(sine/1), math.rad(0) , math.cos(25 * math.cos(sine/8))), 0.3)
+elseif position == "Idle" and attacking == false and running == false then
+change = .5
+spin = true
+seacutlassweld.C0 = seacutlassweld.C0:lerp(CFrame.new(-.7,-2.1,0) * CFrame.Angles(math.rad(230),math.rad(0),math.rad(45)),.8) 
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2 + -.1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0),math.rad(0),math.rad(0)),.1)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.2,0,.5) * CFrame.Angles(math.rad(-90 - 3 * math.sin(sine/12)),math.rad(40),math.rad(0)), 0.1)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,0,.5) * CFrame.Angles(math.rad(-90 - 3 * math.sin(sine/12)),math.rad(-40),math.rad(0)), 0.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.3, 2 - .1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(-10)), 0.1)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.1)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.3, 2.0 - .1 * math.sin(sine/12), 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(10)), 0.1)
+elseif position == "Idle2" and attacking == false and running == false then
+change = .75
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0 - 3 * math.sin(sine/9)),0,0),.1)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.1)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(-.2,.2,0) * CFrame.Angles(0,0,0),.1)
+LEFTARMLERP.C1 = CFrame.new(0,0,0) * CFrame.Angles(0,0,0)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.2,0,.5) * CFrame.Angles(math.rad(-90),math.rad(40),math.rad(0)), 0.4)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.2,0,.5) * CFrame.Angles(math.rad(-90),math.rad(-40),math.rad(0)), 0.4)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.54, 1.4 + .1 * math.sin(sine/9), .4) * CFrame.Angles(math.rad(9 + 2 * math.cos(sine/9)), math.rad(0), math.rad(0)), 0.4)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.5, 2.0,0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(-10 + 2 * math.sin(sine/9))), 0.4)
+elseif position == "Walking2" and attacking == false and running == false then
+ws = 50
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(-20 - 1 * math.sin(sine/9)), math.rad(0 + 0 * math.cos(sine/8)), math.rad(0) + Root.RotVelocity.Y / 30, math.cos(10 * math.cos(sine/10))), 0.3)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(0,0,0),.3)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,0) * CFrame.Angles(math.rad(0),0,0),.3)
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(-1.5,.6,-.5) * CFrame.Angles(math.rad(32),math.rad(5 - .1 * math.sin(sine/12)),math.rad(40 - .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(1.5,.6,-.5) * CFrame.Angles(math.rad(30),math.rad(-5 + .1 * math.sin(sine/12)),math.rad(-40 + .5 * math.sin(sine/12))), 0.3)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(.2,1.2,-.3),.3)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.54, 1.4 + .1 * math.sin(sine/9), .4) * CFrame.Angles(math.rad(9 + 2 * math.cos(sine/9)), math.rad(0), math.rad(0)), 0.3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.54, 2.0 + .02 * math.sin(sine/9), 0.2 + .1 * math.sin(sine/9)) * CFrame.Angles(math.rad(25 + 5 * math.sin(sine/9)), math.rad(20), math.rad(0)), 0.3)
+elseif position == "Running" and attacking == false then
+change = 1
+RIGHTARMLERP.C0 = RIGHTARMLERP.C0:lerp(CFrame.new(0, .5, 0)*CFrame.Angles(math.rad(0),math.rad(0),math.rad(0)), 0.3)
+LEFTARMLERP.C1 = LEFTARMLERP.C1:lerp(CFrame.new(-1.24+.6*math.sin(sine/4)/1.4, 0.54, 0-0.8*math.sin(sine/4))*CFrame.Angles(math.rad(6+140*math.sin(sine/4)/1.2), math.rad(0), math.rad(20+70*math.sin(sine/4))), 0.3)
+LEFTARMLERP.C0 = LEFTARMLERP.C0:lerp(CFrame.new(0,.5,0)*CFrame.Angles(math.rad(0),math.rad(0),math.rad(0)),.3)
+ROOTLERP.C0 = ROOTLERP.C0:lerp(CFrame.new(0, -.2, 0) * CFrame.Angles(math.rad(-20 - 0 * math.sin(sine/4)), math.rad(0 + 6 * math.sin(sine/4)), math.rad(0) + Root.RotVelocity.Y / 30, math.sin(10 * math.sin(sine/4))), 0.3)
+RIGHTLEGLERP.C1 = RIGHTLEGLERP.C1:lerp(CFrame.new(0,0,-.2 + .5*-math.sin(sine/4)),.3)
+RIGHTLEGLERP.C0 = RIGHTLEGLERP.C0:lerp(CFrame.new(-0.5, 1.6+0.1*math.sin(sine/4),.7*-math.sin(sine/4)) * CFrame.Angles(math.rad(15+ -50 * math.sin(sine/4)),0,0),.3)
+LEFTLEGLERP.C1 = LEFTLEGLERP.C1:lerp(CFrame.new(0,0,-.2 + .5*math.sin(sine/4)),.3)
+LEFTLEGLERP.C0 = LEFTLEGLERP.C0:lerp(CFrame.new(0.5, 1.6-0.1*math.sin(sine/4),.7*math.sin(sine/4)) * CFrame.Angles(math.rad(15 + 50 * math.sin(sine/4)),0,0),.3)
+end
+swait()
+end
+end)
+anims()
+warn("The power of water. Made by Supr14")

@@ -1,0 +1,3 @@
+local a  = game:GetObjects("rbxassetid://68129718")[1]
+a.Parent = workspace
+a:MoveTo(workspace.Jetray.Head.Position)
